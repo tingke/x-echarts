@@ -23,9 +23,7 @@ import { setChartConfig } from './util/nomalChart';
 
 import { installPlugins } from './util/installPlugins';
 
-//  let echarts = require('echarts');
 import * as echarts from 'echarts';
-// provide('echart', echarts);
 
 const components = [
     EChart,
@@ -48,63 +46,27 @@ const components = [
 	EWordcloud
 ];
 
-//  function loadVue() {
-//      try {
-//          return require('vue');
-//      } catch (e) {
-//          return null;
-//      }
-//  }
-
-// let Vue = window.Vue;
-// if(!Vue){
-// Vue = loadVue();
-// }
-
-//  let isVue2 = Vue.version.startsWith('2.');
-//  let isVue3 = Vue.version.startsWith('3.');
-
-//  if (!isVue2 && !isVue3) {
-//      console.warn(`Vue version v${Vue.version} is not supported.`);
-//  }
-
 let plugins = [];
 components.forEach((item) => {
     let i = installPlugins(item);
     plugins.push(i);
 });
 
-//  if (isVue3) {
-
-//  }
-
-function install(app) {
+function install(app, option) {
     const version = Number(app.version.split('.')[0]);
     console.log(version);
     if (version < 3) {
         components.forEach((component) => {
             app.component(component.name, component);
         });
-        app.prototype.$pChart = {
-            setChartConfig
-        };
-		app.prototype.$xEchart = {
-            setChartConfig
-        };
         app.prototype.$echarts = echarts;
     } else {
         plugins.forEach(app.use);
-        app.config.globalProperties.$pChart = {
-            setChartConfig
-        };
         app.config.globalProperties.$echarts = echarts;
     }
+
+    option && setChartConfig(option)
 }
-
-// vue2 的时候加载
-// if(isVue2){
-
-// }
 
 if (typeof window !== 'undefined' && window.Vue) {
     const version = Number(window.Vue.version.split('.')[0]);

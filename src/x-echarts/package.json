@@ -1,37 +1,37 @@
 {
-  "name": "x-echarts",
-  "version": "1.0.3",
+  "name": "@tthappy/x-echarts",
+  "version": "1.0.0",
   "description": "基于echarts封装的vue组件，支持vue2，vue3; Based on the echarts-wrapped vue component, it supports vue2 and vue3.",
   "main": "src/index.js",
   "author": "caijw",
   "license": "MIT",
-  "type": "module",  
+  "type": "module",
   "keywords": [
     "x-echarts",
     "javascript",
     "js",
     "vue2",
     "vue3",
-	"echarts",
-	"echarts5",
-	"easy use",
-	"vue3 echarts",
-	"vue2 echarts",
-	"vue3 component echarts",
-	"vue2 component echarts",
-	"vue echarts",
-	"vite",
-	"vite echarts"
+    "echarts",
+    "echarts5",
+    "easy use",
+    "vue3 echarts",
+    "vue2 echarts",
+    "vue3 component echarts",
+    "vue2 component echarts",
+    "vue echarts",
+    "vite",
+    "vite echarts"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eagle1949/x-echarts.git"
+    "url": "git+https://github.com/tingke/x-echarts.git"
   },
-  "homepage": "http://121.43.33.102/docs/#/",
+  "homepage": "https://github.com/tingke/x-echarts",
   "dependencies": {
-	"echarts": "^5.4.0",
+    "echarts": "^5.4.0",
     "echarts-liquidfill": "^3.0.0",
-	"echarts-wordcloud": "^2.1.0",
+    "echarts-wordcloud": "^2.1.0",
     "lodash": "^4.17.15"
   }
 }

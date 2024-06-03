@@ -5,36 +5,37 @@
 // let _debounce = lodash.debounce;
 // import './lodash';
 
-import CONFIG from '../config/config';
+import CONFIG from "../config/config";
 
-let _merge = function(...objects) {  
-    let result = {};  
-  
-    objects.forEach(obj => {  
-        for (let key in obj) {  
-            if (obj.hasOwnProperty(key)) {  
-                result[key] = obj[key];  
-            }  
-        }  
-    });  
-  
-    return result;  
+let _merge = function (...objects) {
+    let result = {};
+
+    objects.forEach((obj) => {
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                result[key] = obj[key];
+            }
+        }
+    });
+
+    return result;
 };
-let _debounce = function(func, wait) {  
-	let timeout;  
-	return function() {  
-	  const context = this;  
-	  const args = arguments;  
-	  clearTimeout(timeout);  
-	  timeout = setTimeout(function() {  
-		func.apply(context, args);  
-	  }, wait);  
-	};  
-  };
-import { getNoDataOption, getFontColor } from '../../src/util/nomalChart';
-import util from './util';
+let _debounce = function (func, wait) {
+    let timeout;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            func.apply(context, args);
+        }, wait);
+    };
+};
+
+import { getNoDataOption, getFontColor } from "../../src/util/nomalChart";
+import util from "./util";
 // let echarts = require('echarts');
-import * as echarts from 'echarts';
+import * as echarts from "echarts";
 
 export default {
     data() {
@@ -45,22 +46,22 @@ export default {
                 textStyle: {
                     color: getFontColor(),
                     fontSize: CONFIG.FONT_S,
-                    fontFamily: CONFIG.FONT_FAMILY
+                    fontFamily: CONFIG.FONT_FAMILY,
                 },
                 toolbox: {
                     show: CONFIG.SHOW_TOOLBOX,
                     feature: {
                         saveAsImage: {
-                            backgroundColor: CONFIG.BG_COLOR
+                            backgroundColor: CONFIG.BG_COLOR,
                         },
-                        restore: {}
+                        restore: {},
                     },
                     iconStyle: {
-                        borderColor: getFontColor()
-                    }
-                }
+                        borderColor: getFontColor(),
+                    },
+                },
             },
-            className: ''
+            className: "",
         };
     },
     props: {
@@ -71,52 +72,52 @@ export default {
                 return {
                     xAxisData: [],
                     legendData: [],
-                    seriesData: []
+                    seriesData: [],
                 };
-            }
+            },
         },
         // 替换echarts的配置项
         option: {
             type: Object,
             default: function () {
                 return {};
-            }
+            },
         },
         //配置项
         config: {
             type: Object,
             default: function () {
                 return {};
-            }
+            },
         },
         showOption: {
             type: Boolean,
-            default: false
+            default: false,
         },
         autoresize: Boolean,
         onClick: {
-            type: Function
-        }
+            type: Function,
+        },
     },
     watch: {
         data: {
-            handler() {
+            handler(val) {
                 this.reloadChart();
             },
-            deep: true
+            deep: true,
         },
         option: {
-            handler() {
+            handler(val) {
                 this.reloadChart();
             },
-            deep: true
+            deep: true,
         },
         config: {
-            handler() {
+            handler(val) {
                 this.reloadChart();
             },
-            deep: true
-        }
+            deep: true,
+        },
     },
     created() {
         // reloadChart 延迟调用，在同时 watch 属性：data, option, config 的时候，可能调用组件时会修改这三个属性，会导致重复调用三次
@@ -127,8 +128,8 @@ export default {
         this._renderChart();
     },
     methods: {
-        setStyle(option){
-            this.className = option.series ? '' : 'p-chart-no-data';
+        setStyle(option) {
+            this.className = option.series ? "" : "p-chart-no-data";
         },
         getOption() {
             return this.finalOpt;
@@ -146,7 +147,6 @@ export default {
                     }
 
                     opts = _merge({}, this.defaultOpt, opts, option);
-              
 
                     //_merge(opts, this.defaultOpt, this.option);
                     this.chart.setOption(opts, true);
@@ -160,9 +160,8 @@ export default {
                     this.finalOpt = opts;
                 }
             } catch (e) {
-    
                 console.warn(e); //打印错误提示
-                let opts = getNoDataOption(); //已异常时使用无数据内容代替
+                let opts = getNoDataOption(); //已异常时使用无数据内容代替r
                 this.chart.setOption(opts, true);
                 this.setStyle(opts);
 
@@ -179,7 +178,6 @@ export default {
             /*  this.chart.setOption_ = function(opts, bl){
                 this.chart.setOption(opts, bl);
             } */
-
             // 渲染echarts
             this.refreshChart();
 
@@ -190,10 +188,10 @@ export default {
             });
 
             if (window.Vuep) {
-                this.chart.on('dblclick', () => {
+                this.chart.on("dblclick", () => {
                     console.log(JSON.stringify(this.finalOpt));
                 });
             }
-        }
-    }
+        },
+    },
 };

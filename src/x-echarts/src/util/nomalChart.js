@@ -1,42 +1,37 @@
 /** @format */
 
+import util from './util';
 // import { FONT_S, FONT_M, FONT_L, COLOR } from '../config/config';
-import CONFIG from '../config/config';
+import defaultConfig from '../config/config';
+let CONFIG = util.deepClone(defaultConfig)
 
 // import lodash from 'lodash';
 // let _merge = lodash.merge;
 // import imgSrc from '../images/nodata.png';
 
 // import './lodash';
-let _merge = function(...objects) {  
-    let result = {};  
-  
-    objects.forEach(obj => {  
-        for (let key in obj) {  
-            if (obj.hasOwnProperty(key)) {  
-                result[key] = obj[key];  
-            }  
-        }  
-    });  
-  
-    return result;  
+let _merge = function(...objects) {
+    let result = {};
+
+    objects.forEach(obj => {
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                result[key] = obj[key];
+            }
+        }
+    });
+
+    return result;
 };;
-// import imgSrc from '../images/nodata.png';
-import util from './util';
 
-// let echarts = require('echarts/lib/echarts');
 import * as echarts from 'echarts';
-
-// import * as echarts from 'echarts';
-// require('echarts-liquidfill');
 import 'echarts-liquidfill';
-
 import 'echarts-wordcloud';
 
 
 //修改配置样式
 export const setChartConfig = (opt = {}) => {
-    _merge(CONFIG, opt);
+    CONFIG = _merge(CONFIG, opt);
 };
 
 //坐标轴样式
@@ -98,14 +93,14 @@ export const LEGEND = () => {
 };
 
 //提示框
-export const TOOLTIP = () => {
-    return {
+export const TOOLTIP = (tooltip = {}) => {
+    return Object.assign({
         backgroundColor: CONFIG.TOOLTIP_BG_COLOR,
         borderColor: CONFIG.TOOLTIP_BORDER_COLOR,
         textStyle: {
             color: CONFIG.TOOLTIP_FONT_COLOR
         }
-    };
+    }, tooltip);
 };
 
 //获取颜色
@@ -373,9 +368,6 @@ export const renderPie = (data, configObj, opt) => {
     }
 
 
-	
-	
-
     let legendDataObj = {};
     //无数据的部分不显示label和连线 图例
     data.forEach((v, i) => {
@@ -509,6 +501,7 @@ export const renderPie = (data, configObj, opt) => {
     if (opt) {
         _merge(option, opt);
     }
+
 
     return option;
 };
@@ -1109,7 +1102,7 @@ export const renderStripeBar3 = (data, configObj, opt) => {
     }
 
 	// 新加的方法
-	
+
 	var defaultData = [];
 	data.forEach(item=>{
 		console.log(item);
@@ -1230,7 +1223,7 @@ export const renderStripeBar3 = (data, configObj, opt) => {
 				axisTick: {
 					show: false,
 				},
-	
+
 				axisLabel: {
 					interval: 0,
 					shadowOffsetX: '-40px',
@@ -1240,7 +1233,7 @@ export const renderStripeBar3 = (data, configObj, opt) => {
 					fontSize: CONFIG.FONT_S,
 					formatter: function (value, index) {
 						return (
-							'' + data[index].value + '  ' 
+							'' + data[index].value + '  '
 						);
 					},
 					rich: {
@@ -1469,7 +1462,7 @@ export const renderCylinderBar = (data, configObj, opt) => {
 
 /**
  *   词云
- * 	 data  Object  图表数据 必须, 
+ * 	 data  Object  图表数据 必须,
  *   data 必须
  * 	 configObj  Object  showShape true false  两种不同形式
  *   属性如下：
@@ -1482,7 +1475,7 @@ export const renderWordcloud = (data, configObj, opt) => {
 
 	let wordCloudColor = getColor();
 
-    let option =   { 
+    let option =   {
 		series: [
 			{
 				type: "wordCloud",
@@ -1512,7 +1505,7 @@ export const renderWordcloud = (data, configObj, opt) => {
 		option.series[0].shape = 'circle';
 		option.series[0].gridSize = 20;
 		option.series[0].sizeRange= [12, 50];
-		option.series[0].rotationRange= [0, 0];	
+		option.series[0].rotationRange= [0, 0];
 		option.series[0].autoSize = {
 			"enable": true,
 			"minSize": 18
@@ -3249,7 +3242,7 @@ export const renderLine = (data, configObj, opt) => {
 
         series: data.series,
         tooltip: {
-            ...TOOLTIP(),
+            ...TOOLTIP(configObj.tooltip),
             trigger: 'axis'
         }
     };
@@ -3335,7 +3328,7 @@ export const renderBar = (data, configObj, opt) => {
 					}
 				}
 			}
-			
+
 
             if (configObj.pictorial) {
                 let itemColor = colors[i];

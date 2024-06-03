@@ -4,19 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-	"fastInstall": "yarn install",
+    "fastInstall": "yarn install",
     "dev": "vite",
     "build": "vite build",
-	"tsBuild": "vue-tsc && vite build",
-	"lib": "vite build",
+    "tsBuild": "vue-tsc && vite build",
+    "lib": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-	"x-echarts": "1.0.0",
+    "x-echarts": "1.0.0",
     "vue": "^3.3.11",
-	"echarts": "^5.4.0",
+    "echarts": "^5.4.0",
     "echarts-liquidfill": "^3.0.0",
-	"echarts-wordcloud": "^2.1.0"
+    "echarts-wordcloud": "^2.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
