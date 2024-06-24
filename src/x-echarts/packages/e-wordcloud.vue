@@ -9,7 +9,7 @@
 import { renderWordcloud } from '../src/util/nomalChart';
 import mixin from '../src/util/mixin';
 export default {
-    name: 'PWordcloud',
+    name: 'EWordcloud',
     mixins: [mixin],
     methods: {
         initChart() {

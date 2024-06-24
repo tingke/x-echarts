@@ -424,7 +424,7 @@ export const renderPie = (data, configObj, opt) => {
         }, */
         color: getColor(configObj.color),
         tooltip: {
-            ...TOOLTIP(),
+            ...TOOLTIP(configObj.tooltip),
             formatter: configObj.labelFormatter
         },
         series: [
@@ -3454,7 +3454,7 @@ export const renderBar = (data, configObj, opt) => {
         yAxis: data.yAxis ? categoryAxis : valueAxis,
         series: data.series.concat(series_),
         tooltip: {
-            ...TOOLTIP(),
+            ...TOOLTIP(configObj.tooltip),
             trigger: 'axis'
         }
     };
@@ -3768,7 +3768,7 @@ export const renderRadar = (data, configObj, opt) => {
     let option = {
         color: getColor(configObj.color),
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(configObj.tooltip)
         },
         radar: {
             radius: '60%',
@@ -4061,7 +4061,7 @@ export const renderVarietyBar = (data, configObj, opt) => {
             bottom: 0
         },
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(configObj.tooltip)
         },
         yAxis: [
             {
@@ -4217,7 +4217,7 @@ export const renderAssetsBar = (data, configObj, opt) => {
             left: '10%'
         },
         tooltip: {
-            ...TOOLTIP(),
+            ...TOOLTIP(configObj.tooltip),
             formatter: function (v) {
                 return `${v.seriesName}：${max - v.value}年`;
             }
