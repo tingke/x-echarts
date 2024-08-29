@@ -1,40 +1,8 @@
 /** @format */
 
-// import lodash from 'lodash';
-// let _merge = lodash.merge;
-// let _debounce = lodash.debounce;
-// import './lodash';
-
 import CONFIG from "../config/config";
-
-let _merge = function (...objects) {
-    let result = {};
-
-    objects.forEach((obj) => {
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                result[key] = obj[key];
-            }
-        }
-    });
-
-    return result;
-};
-let _debounce = function (func, wait) {
-    let timeout;
-    return function () {
-        const context = this;
-        const args = arguments;
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-            func.apply(context, args);
-        }, wait);
-    };
-};
-
 import { getNoDataOption, getFontColor } from "../../src/util/nomalChart";
 import util from "./util";
-// let echarts = require('echarts');
 import * as echarts from "echarts";
 
 export default {
@@ -121,8 +89,8 @@ export default {
     },
     created() {
         // reloadChart 延迟调用，在同时 watch 属性：data, option, config 的时候，可能调用组件时会修改这三个属性，会导致重复调用三次
-        // 使用 _debounce 来防抖动，只让最后一次调用生效，减少频繁刷新。
-        this.reloadChart = _debounce(this.refreshChart, 100);
+        // 使用 debounce 来防抖动，只让最后一次调用生效，减少频繁刷新。
+        this.reloadChart = util.debounce(this.refreshChart, 100);
     },
     mounted() {
         this._renderChart();
@@ -140,15 +108,12 @@ export default {
 
                 if (opts) {
                     let option = util.deepClone(this.option);
-                    //let option = JSON.parse(JSON.stringify(this.option));
                     //避免无数据时 option中的series配置项（没有type）导致报错
                     if (!opts.series || !opts.series[0]) {
                         delete option.series;
                     }
 
-                    opts = _merge({}, this.defaultOpt, opts, option);
-
-                    //_merge(opts, this.defaultOpt, this.option);
+                    opts = util.merge({}, this.defaultOpt, opts, option);
                     this.chart.setOption(opts, true);
                     this.setStyle(opts);
 

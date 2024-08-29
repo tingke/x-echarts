@@ -35,6 +35,9 @@ export default {
     COLOR_LIGHT: [
         '#5470C6', '#91CC75', '#FACB59', '#EE6666', '#73C0DE', '#3BA272', '#FD8C56', '#9A60B4', '#EA7CCC'
     ],
+    // 直线图是否平滑
+    LINE_SMOOTH: false,
+
     //水质Ⅰ~ 劣Ⅴ类颜色
     waterGradesColor: [
         '#44c5fd',

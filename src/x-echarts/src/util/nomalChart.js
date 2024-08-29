@@ -1,28 +1,8 @@
 /** @format */
 
 import util from './util';
-// import { FONT_S, FONT_M, FONT_L, COLOR } from '../config/config';
 import defaultConfig from '../config/config';
 let CONFIG = util.deepClone(defaultConfig)
-
-// import lodash from 'lodash';
-// let _merge = lodash.merge;
-// import imgSrc from '../images/nodata.png';
-
-// import './lodash';
-let _merge = function(...objects) {
-    let result = {};
-
-    objects.forEach(obj => {
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                result[key] = obj[key];
-            }
-        }
-    });
-
-    return result;
-};;
 
 import * as echarts from 'echarts';
 import 'echarts-liquidfill';
@@ -31,7 +11,7 @@ import 'echarts-wordcloud';
 
 //修改配置样式
 export const setChartConfig = (opt = {}) => {
-    CONFIG = _merge(CONFIG, opt);
+    CONFIG = util.merge(CONFIG, opt);
 };
 
 //坐标轴样式
@@ -424,7 +404,7 @@ export const renderPie = (data, configObj, opt) => {
         }, */
         color: getColor(configObj.color),
         tooltip: {
-            ...TOOLTIP(configObj.tooltip),
+            ...TOOLTIP(),
             formatter: configObj.labelFormatter
         },
         series: [
@@ -499,7 +479,7 @@ export const renderPie = (data, configObj, opt) => {
     } */
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
 
@@ -582,7 +562,7 @@ export const renderStackBar = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -833,7 +813,7 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     // debugger
@@ -974,7 +954,7 @@ export const renderStripeBar = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -1078,7 +1058,7 @@ export const renderStripeBar2 = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -1342,7 +1322,7 @@ export const renderStripeBar3 = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -1451,7 +1431,7 @@ export const renderCylinderBar = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
 
@@ -1513,7 +1493,7 @@ export const renderWordcloud = (data, configObj, opt) => {
 	}
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -1653,7 +1633,7 @@ export const rainbowchart = (configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -1758,7 +1738,7 @@ export const ringchart = (configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -1943,7 +1923,7 @@ export const renderHeatmap = (data, configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -2063,7 +2043,7 @@ export const dashboardchart = (configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -2528,7 +2508,7 @@ export const dashboardchart2 = (configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -2722,7 +2702,7 @@ export const dashboardchart3 = (configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -2865,7 +2845,7 @@ export const airwrwchart = (configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -2938,7 +2918,7 @@ export const waterPolochart1 = (configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -3150,7 +3130,7 @@ export const renderLine = (data, configObj, opt) => {
     if (!data || !data.series || data.series.length === 0) {
         return getNoDataOption();
     }
-    data = _merge({}, data);
+    data = util.merge({}, data);
     let hasBar = false; //是否混合有柱型图
     let color = getColor(configObj.color);
     data.series.map((v, i) => {
@@ -3161,7 +3141,11 @@ export const renderLine = (data, configObj, opt) => {
             hasBar = true;
             v.barMaxWidth = 20;
         }
-        v.smooth = configObj.smooth !== false;
+        if(configObj.smooth) {
+            v.smooth = configObj.smooth !== false;
+        }else {
+            v.smooth = CONFIG.LINE_SMOOTH;
+        }
         v.connectNulls = configObj.connectNulls !== false;
         if (configObj.showLabel) {
             v.label = {
@@ -3207,6 +3191,11 @@ export const renderLine = (data, configObj, opt) => {
         data: data.xAxis || data.yAxis || null,
         boundaryGap: hasBar
     };
+    if(Array.isArray(data.xAxis)) {
+        categoryAxis.data = data.xAxis
+    }else if(typeof data.xAxis === 'object') {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis)
+    }
     categoryAxis.axisLine.show = !data.yAxis; //y轴做类目轴时 不显示
 
     //数值轴
@@ -3242,7 +3231,7 @@ export const renderLine = (data, configObj, opt) => {
 
         series: data.series,
         tooltip: {
-            ...TOOLTIP(configObj.tooltip),
+            ...TOOLTIP(),
             trigger: 'axis'
         }
     };
@@ -3252,7 +3241,7 @@ export const renderLine = (data, configObj, opt) => {
         option.series[0].markLine = markLine;
     }
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -3275,7 +3264,7 @@ export const renderBar = (data, configObj, opt) => {
     if (!data || !data.series || data.series.length === 0) {
         return getNoDataOption();
     }
-    data = _merge({}, data);
+    data = util.merge({}, data);
 
     let colors = getColor(configObj.color);
 
@@ -3288,7 +3277,11 @@ export const renderBar = (data, configObj, opt) => {
     data.series.map((v, i) => {
         v.type = v.type || 'bar';
         if (v.type === 'line') {
-            v.smooth = true;
+            if(configObj.smooth) {
+                v.smooth = configObj.smooth !== false;
+            }else {
+                v.smooth = CONFIG.LINE_SMOOTH;
+            }
             v.symbol = 'circle';
             v.symbolSize = 2;
             v.connectNulls = true;
@@ -3419,6 +3412,11 @@ export const renderBar = (data, configObj, opt) => {
         type: 'category',
         data: data.xAxis || data.yAxis || null
     };
+    if(Array.isArray(data.xAxis)) {
+        categoryAxis.data = data.xAxis
+    }else if(typeof data.xAxis === 'object') {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis)
+    }
     categoryAxis.axisLine.show = !data.yAxis; //y轴做类目轴时 不显示
 
     //数值轴
@@ -3454,12 +3452,12 @@ export const renderBar = (data, configObj, opt) => {
         yAxis: data.yAxis ? categoryAxis : valueAxis,
         series: data.series.concat(series_),
         tooltip: {
-            ...TOOLTIP(configObj.tooltip),
+            ...TOOLTIP(),
             trigger: 'axis'
         }
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -3671,7 +3669,7 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -3768,7 +3766,7 @@ export const renderRadar = (data, configObj, opt) => {
     let option = {
         color: getColor(configObj.color),
         tooltip: {
-            ...TOOLTIP(configObj.tooltip)
+            ...TOOLTIP()
         },
         radar: {
             radius: '60%',
@@ -3804,7 +3802,7 @@ export const renderRadar = (data, configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -3979,7 +3977,7 @@ export const renderSanKey = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -4061,7 +4059,7 @@ export const renderVarietyBar = (data, configObj, opt) => {
             bottom: 0
         },
         tooltip: {
-            ...TOOLTIP(configObj.tooltip)
+            ...TOOLTIP()
         },
         yAxis: [
             {
@@ -4166,7 +4164,7 @@ export const renderVarietyBar = (data, configObj, opt) => {
         ]
     };
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -4217,7 +4215,7 @@ export const renderAssetsBar = (data, configObj, opt) => {
             left: '10%'
         },
         tooltip: {
-            ...TOOLTIP(configObj.tooltip),
+            ...TOOLTIP(),
             formatter: function (v) {
                 return `${v.seriesName}：${max - v.value}年`;
             }
@@ -4313,7 +4311,7 @@ export const renderAssetsBar = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
@@ -4327,7 +4325,7 @@ export const renderMap = (data, configObj, opt) => {
     };
 
     if (opt) {
-        _merge(option, opt);
+        util.merge(option, opt);
     }
 
     return option;
