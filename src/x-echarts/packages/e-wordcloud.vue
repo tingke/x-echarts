@@ -6,16 +6,16 @@
 </template>
 
 <script>
-import { renderWordcloud } from '../src/util/nomalChart';
-import mixin from '../src/util/mixin';
+import { renderWordcloud } from "../src/util/nomalChart";
+import mixin from "../src/util/mixin";
 export default {
-    name: 'EWordcloud',
+    name: "EWordcloud",
     mixins: [mixin],
     methods: {
         initChart() {
             return renderWordcloud(this.data, this.config);
-        }
-    }
+        },
+    },
 };
 </script>
 

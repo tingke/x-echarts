@@ -9,8 +9,7 @@
  * @LastEditTime: 2019-03-28 11:30:49
  */
 
-// const deepmerge = require('deepmerge')
-import deepmerge from 'deepmerge';
+import deepmerge from "deepmerge";
 
 export default new (class Utils {
     constructor() {
@@ -217,7 +216,7 @@ export default new (class Utils {
         // });
 
         // return result;
-        return deepmerge.all(objects)
+        return deepmerge.all(objects);
     }
 
     debounce(func, wait) {

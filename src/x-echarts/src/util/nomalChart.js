@@ -1,13 +1,12 @@
 /** @format */
 
-import util from './util';
-import defaultConfig from '../config/config';
-let CONFIG = util.deepClone(defaultConfig)
+import util from "./util";
+import defaultConfig from "../config/config";
+let CONFIG = util.deepClone(defaultConfig);
 
-import * as echarts from 'echarts';
-import 'echarts-liquidfill';
-import 'echarts-wordcloud';
-
+import * as echarts from "echarts";
+import "echarts-liquidfill";
+import "echarts-wordcloud";
 
 //修改配置样式
 export const setChartConfig = (opt = {}) => {
@@ -20,29 +19,29 @@ export const AXIS_STYLE = () => {
         nameTextStyle: {
             color: getFontColor(),
             padding: [0, 0, -10, 0],
-            fontSize: CONFIG.FONT_S
+            fontSize: CONFIG.FONT_S,
         },
         axisLabel: {
             color: getFontColor(),
-            fontSize: CONFIG.FONT_S
+            fontSize: CONFIG.FONT_S,
         },
         axisTick: {
             /*  lineStyle: {
                 color: getBorderColor(),
                 width: 1
             }, */
-            show: false
+            show: false,
         },
         splitLine: {
-            show: false
+            show: false,
         },
         axisLine: {
             lineStyle: {
                 color: getBorderColor(),
-                width: 1
+                width: 1,
             },
-            show: true
-        }
+            show: true,
+        },
     };
 };
 
@@ -55,45 +54,46 @@ export const LEGEND = () => {
         icon: CONFIG.LEGEND_ICON,
         // borderRadius: 0,
         // symbolKeepAspect: false,
-        left: CONFIG.SHOW_TOOLBOX ? '10%' : 'center',
+        left: CONFIG.SHOW_TOOLBOX ? "10%" : "center",
         padding: CONFIG.SHOW_TOOLBOX ? [0, 50, 0, 0] : 0,
         textStyle: {
             color: getFontColor(),
             fontSize: CONFIG.FONT_S,
-			lineHeight: CONFIG.FONT_S,
-			rich: {
-				a: {
-					// eslint-disable-next-line no-mixed-spaces-and-tabs
-					verticalAlign: 'middle'
-				},
-			},
-			padding:[0,-2,-3, 0]
-        }
+            lineHeight: CONFIG.FONT_S,
+            rich: {
+                a: {
+                    // eslint-disable-next-line no-mixed-spaces-and-tabs
+                    verticalAlign: "middle",
+                },
+            },
+            padding: [0, -2, -3, 0],
+        },
     };
 };
 
 //提示框
 export const TOOLTIP = (tooltip = {}) => {
-    return Object.assign({
-        backgroundColor: CONFIG.TOOLTIP_BG_COLOR,
-        borderColor: CONFIG.TOOLTIP_BORDER_COLOR,
-        textStyle: {
-            color: CONFIG.TOOLTIP_FONT_COLOR
-        }
-    }, tooltip);
+    return Object.assign(
+        {
+            backgroundColor: CONFIG.TOOLTIP_BG_COLOR,
+            borderColor: CONFIG.TOOLTIP_BORDER_COLOR,
+            textStyle: {
+                color: CONFIG.TOOLTIP_FONT_COLOR,
+            },
+        },
+        tooltip
+    );
 };
 
 //获取颜色
 export const getColor = (color) => {
-    if (!color || color === 'normalColor') {
+    if (!color || color === "normalColor") {
         //返回图表常规配色
         if (CONFIG.COLOR && CONFIG.COLOR.length) {
             return CONFIG.COLOR;
         }
-        return CONFIG.THEME_COLOR === 'dark'
-            ? CONFIG.COLOR_DARK
-            : CONFIG.COLOR_LIGHT;
-    } else if (typeof color === 'string' && CONFIG[color]) {
+        return CONFIG.THEME_COLOR === "dark" ? CONFIG.COLOR_DARK : CONFIG.COLOR_LIGHT;
+    } else if (typeof color === "string" && CONFIG[color]) {
         //返回指定配色
         return CONFIG[color];
     } else {
@@ -103,25 +103,17 @@ export const getColor = (color) => {
 
 //获取边线颜色
 export const getBorderColor = () => {
-    return CONFIG.BORDER_COLOR
-        ? CONFIG.BORDER_COLOR
-        : CONFIG.THEME_COLOR === 'dark'
-        ? CONFIG.BORDER_COLOR_DARK
-        : CONFIG.BORDER_COLOR_LIGHT;
+    return CONFIG.BORDER_COLOR ? CONFIG.BORDER_COLOR : CONFIG.THEME_COLOR === "dark" ? CONFIG.BORDER_COLOR_DARK : CONFIG.BORDER_COLOR_LIGHT;
 };
 
 //获取字体颜色
 export const getFontColor = () => {
-    return CONFIG.FONT_COLOR
-        ? CONFIG.FONT_COLOR
-        : CONFIG.THEME_COLOR === 'dark'
-        ? CONFIG.FONT_COLOR_DARK
-        : CONFIG.FONT_COLOR_LIGHT;
+    return CONFIG.FONT_COLOR ? CONFIG.FONT_COLOR : CONFIG.THEME_COLOR === "dark" ? CONFIG.FONT_COLOR_DARK : CONFIG.FONT_COLOR_LIGHT;
 };
 
 //十六进制颜色转为rgb颜色
-const getColorRgb = (color = '#fff') => {
-    if (typeof color !== 'string') {
+const getColorRgb = (color = "#fff") => {
+    if (typeof color !== "string") {
         return color;
     }
     let pattern = /^#([0-9|a-f]{3}|[0-9|a-f]{6})$/;
@@ -129,25 +121,18 @@ const getColorRgb = (color = '#fff') => {
     if (pattern.test(color)) {
         if (color.length === 4) {
             // 将三位转换为六位
-            color =
-                '#' +
-                color[1] +
-                color[1] +
-                color[2] +
-                color[2] +
-                color[3] +
-                color[3];
+            color = "#" + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
         }
         //处理六位的颜色值
         let colorNew = [];
         for (let i = 1; i < 7; i += 2) {
-            colorNew.push(parseInt('0x' + color.slice(i, i + 2)));
+            colorNew.push(parseInt("0x" + color.slice(i, i + 2)));
         }
         return colorNew;
         //return 'RGB(' + colorNew.join(',') + ')';
-    } else if (color.indexOf('rgb') > -1) {
-        color = color.replace(/[rgba()]/g, '');
-        return color.split(',').slice(0, 3);
+    } else if (color.indexOf("rgb") > -1) {
+        color = color.replace(/[rgba()]/g, "");
+        return color.split(",").slice(0, 3);
     }
     return [];
 };
@@ -171,60 +156,60 @@ const getChangeColor = (color, level = 0) => {
             colorArr[i] = Math.floor((255 - colorArr[i]) * level + colorArr[i]);
         }
     }
-    return `rgb(${colorArr.join(',')})`;
+    return `rgb(${colorArr.join(",")})`;
 };
 
 //获取象形柱状图的颜色
 const getPictorialColor = (itemColor, pictorial) => {
-    if (pictorial === 'diamond') {
+    if (pictorial === "diamond") {
         return {
             x: 0,
             y: 0,
             x2: 1,
             y2: 0,
-            type: 'linear',
+            type: "linear",
             global: false,
             colorStops: [
                 {
                     offset: 0,
-                    color: itemColor
+                    color: itemColor,
                 },
                 {
                     offset: 0.46,
-                    color: itemColor
+                    color: itemColor,
                 },
                 {
                     offset: 0.52,
-                    color: getChangeColor(itemColor, 0.1) //颜色加深
+                    color: getChangeColor(itemColor, 0.1), //颜色加深
                 },
                 {
                     offset: 1,
-                    color: getChangeColor(itemColor, 0.2) //颜色加深
-                }
-            ]
+                    color: getChangeColor(itemColor, 0.2), //颜色加深
+                },
+            ],
         };
-    } else if (pictorial === 'circle') {
+    } else if (pictorial === "circle") {
         return {
             x: 0,
             y: 0,
             x2: 1,
             y2: 0,
-            type: 'linear',
+            type: "linear",
             global: false,
             colorStops: [
                 {
                     offset: 0,
-                    color: itemColor
+                    color: itemColor,
                 },
                 {
                     offset: 0.5,
-                    color: itemColor
+                    color: itemColor,
                 },
                 {
                     offset: 1,
-                    color: getChangeColor(itemColor, 0.2) //颜色加深
-                }
-            ]
+                    color: getChangeColor(itemColor, 0.2), //颜色加深
+                },
+            ],
         };
     } else {
         return itemColor;
@@ -234,7 +219,7 @@ const getPictorialColor = (itemColor, pictorial) => {
 //无数据时的配置项
 export const getNoDataOption = () => {
     return {
-       /*  graphic: [
+        /*  graphic: [
             {
                 type: 'image',
                 id: 'logo',
@@ -283,26 +268,26 @@ const getMarkLine = (data) => {
             yAxis: v.value,
             itemStyle: {
                 normal: {
-                    color: v.color || '#f00'
-                }
-            }
+                    color: v.color || "#f00",
+                },
+            },
         });
     });
     let markLine = {
         animation: false,
         symbolSize: 0,
         linStyle: {
-            type: 'dotted',
-            width: 2
+            type: "dotted",
+            width: 2,
         },
         data: lines,
         label: {
             normal: {
                 show: true,
                 color: getFontColor(),
-                formatter: '{b}'
-            }
-        }
+                formatter: "{b}",
+            },
+        },
     };
     return markLine;
 };
@@ -336,17 +321,16 @@ export const renderPie = (data, configObj, opt) => {
     let radius_ = 0;
     let center = configObj.center;
     if (!center) {
-        center = [configObj.legendOrient === 'vertical' ? '40%' : '50%', '50%'];
+        center = [configObj.legendOrient === "vertical" ? "40%" : "50%", "50%"];
     }
 
     //半径
     if (!radius) {
-        radius = configObj.type === 'ring' ? ['35%', '60%'] : '60%';
-        radius_ = configObj.type === 'ring' ? ['35%', '40%'] : '0';
+        radius = configObj.type === "ring" ? ["35%", "60%"] : "60%";
+        radius_ = configObj.type === "ring" ? ["35%", "40%"] : "0";
     } else if (radius.constructor === Array && radius[1]) {
-        radius_ = [radius[0], parseFloat(radius[0]) + 5 + '%'];
+        radius_ = [radius[0], parseFloat(radius[0]) + 5 + "%"];
     }
-
 
     let legendDataObj = {};
     //无数据的部分不显示label和连线 图例
@@ -356,10 +340,10 @@ export const renderPie = (data, configObj, opt) => {
             data[i].value = 0;
             if (!configObj.showNullLabel) {
                 data[i].label = {
-                    show: false
+                    show: false,
                 };
                 data[i].labelLine = {
-                    show: false
+                    show: false,
                 };
             }
         }
@@ -373,19 +357,19 @@ export const renderPie = (data, configObj, opt) => {
         },
         textStyle: {
             color: getFontColor(),
-            ...configObj.legendTextStyle
-        }
+            ...configObj.legendTextStyle,
+        },
     };
 
-    if (configObj.legendOrient === 'vertical') {
-        legend.left = 'auto';
-        legend.right = '5%';
-        legend.top = 'center';
-        legend.orient = 'vertical';
+    if (configObj.legendOrient === "vertical") {
+        legend.left = "auto";
+        legend.right = "5%";
+        legend.top = "center";
+        legend.orient = "vertical";
     }
     let option = {
         textStyle: {
-            color: null //避免全局字体颜色覆盖饼图颜色
+            color: null, //避免全局字体颜色覆盖饼图颜色
         },
         legend,
         /* title: {
@@ -405,69 +389,63 @@ export const renderPie = (data, configObj, opt) => {
         color: getColor(configObj.color),
         tooltip: {
             ...TOOLTIP(),
-            formatter: configObj.labelFormatter
+            formatter: configObj.labelFormatter,
         },
         series: [
             {
-                name: '',
-                type: 'pie',
+                name: "",
+                type: "pie",
                 radius: radius,
-                roseType: configObj.type === 'rose',
+                roseType: configObj.type === "rose",
                 center: center,
                 label: {
                     show: configObj.showLabel,
                     color: getFontColor(),
-                    formatter: configObj.labelFormatter
+                    formatter: configObj.labelFormatter,
                 },
                 itemStyle: {
                     normal: {
                         //shadowColor: 'rgba(0,0,0,0.4)',
-                        shadowBlur: 0
-                    }
+                        shadowBlur: 0,
+                    },
                 },
                 labelLine: {
-                    show: configObj.showLabel
+                    show: configObj.showLabel,
                 },
-                data: data
-            }
-        ]
+                data: data,
+            },
+        ],
     };
 
+    // 分隔饼图
+    let isShowSplit = configObj.isShowSplit;
+    if (isShowSplit) {
+        option.series[0].itemStyle = {
+            borderWidth: 3,
+            borderColor: "#fff",
+        };
+    }
 
-	// 分隔饼图
-	let isShowSplit = configObj.isShowSplit;
-	if(isShowSplit){
-		option.series[0].itemStyle =  {
-			borderWidth: 3,
-			borderColor: '#fff'
-		}
-	}
-
-
-
-    if (configObj.title || configObj.type === 'ring') {
+    if (configObj.title || configObj.type === "ring") {
         //为了标题始终在圆环中间，使用饼图的label显示标题
         option.series.push({
-            name: '',
-            type: 'pie',
+            name: "",
+            type: "pie",
             center: center,
             silent: true,
-            data: [{ name: '', value: 100 }],
+            data: [{ name: "", value: 100 }],
             radius: radius_,
             label: {
-                position: 'center',
+                position: "center",
                 formatter: configObj.title,
                 fontSize: CONFIG.FONT_M,
                 lineHeight: CONFIG.FONT_M * 1.4,
-                color: getFontColor()
+                color: getFontColor(),
             },
             itemStyle: {
-                color:
-                    configObj.isShowInnerShadow !== false
-                        ? 'rgba(0,0,0,0.3)'
-                        : 'rgba(0,0,0,0)'
+                color: configObj.isShowInnerShadow !== false ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0)",
             },
-            z: 10
+            z: 10,
         });
     }
     /*  if (configObj.showLabel) {
@@ -481,7 +459,6 @@ export const renderPie = (data, configObj, opt) => {
     if (opt) {
         util.merge(option, opt);
     }
-
 
     return option;
 };
@@ -504,61 +481,86 @@ export const renderStackBar = (data, configObj, opt) => {
         return getNoDataOption();
     }
 
-    let unit = configObj.unit || '';
+    let unit = configObj.unit || "";
     let barWidth = configObj.barWidth || 20;
     let legend = [];
+    let isYAxis = configObj.valueAxis && configObj.valueAxis === "x";
+
     data.series.map((v) => {
         legend.push(v.name);
-        v.stack = configObj.include ? '' : 'one';
-        v.type = 'bar';
+        v.stack = configObj.include ? "" : "one";
+        v.type = "bar";
         v.barWidth = barWidth;
-        v.barMaxWidth = '60%';
-        v.barGap = configObj.include ? '-100%' : null;
+        v.barMaxWidth = "60%";
+        v.barGap = configObj.include ? "-100%" : null;
+
+        if(isYAxis && v.yAxisIndex != undefined) {
+            v.xAxisIndex = v.yAxisIndex;
+            delete v.yAxisIndex
+        }
     });
 
     //类目轴
     let categoryAxis = {
         ...AXIS_STYLE(),
-        type: 'category',
-        data: data.xAxis || data.yAxis || null
+        type: "category",
+        data: data.xAxis || data.yAxis || null,
     };
-    categoryAxis.axisLine.show = !data.yAxis; //y轴做类目轴时 不显示
+    if (Array.isArray(data.xAxis)) {
+        let hasData = data.xAxis.some((v) => typeof v === 'object' && Array.isArray(v.data));
+        if(hasData) {
+            categoryAxis = data.xAxis.map(v => {
+                return Object.assign({}, categoryAxis, v);
+            })
+        }else {
+            categoryAxis.data = data.xAxis;
+        }
+    } else if (typeof data.xAxis === "object") {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis);
+    }
+
 
     //数值轴
     let valueAxis = {
         ...AXIS_STYLE(),
-        type: 'value',
+        type: "value",
         name: unit,
         nameTextStyle: {
-            padding: [0, 20, 2, 0]
+            padding: [0, 20, 2, 0],
         },
         axisLine: {
-            show: false
+            show: false,
         },
         splitLine: {
-            show: !data.yAxis, //y轴做类目轴时 不显示
             lineStyle: {
                 color: getBorderColor(),
                 width: 1,
-                type: 'dashed'
-            }
-        }
+                type: "dashed",
+            },
+        },
     };
+    if (Array.isArray(data.yAxis)) {
+        valueAxis =data.yAxis.map(v => {
+            return Object.assign({}, valueAxis, v);
+        })
+    } else if (typeof data.xAxis === "object") {
+        valueAxis = Object.assign({}, valueAxis, data.xAxis);
+    }
 
     let option = {
         tooltip: {
             ...TOOLTIP(),
-            trigger: 'axis',
+            trigger: "axis",
             axisPointer: {
-                type: 'none'
-            }
+                type: "none",
+            },
         },
         grid: CONFIG.GRID,
         color: getColor(configObj.color),
         legend: LEGEND(),
-        yAxis: data.yAxis ? categoryAxis : valueAxis,
-        xAxis: data.xAxis ? categoryAxis : valueAxis,
-        series: data.series
+        xAxis: isYAxis ? valueAxis : categoryAxis,
+        yAxis: isYAxis ? categoryAxis : valueAxis,
+        series: data.series,
     };
 
     if (opt) {
@@ -582,13 +584,7 @@ export const renderStackBar = (data, configObj, opt) => {
  * @return {Object} 图表配置项
  * */
 export const renderPictorialStackBar = (data, configObj, opt) => {
-    if (
-        !data ||
-        !data.xAxis ||
-        !data.xAxis.length ||
-        !data.series ||
-        !data.series.length
-    ) {
+    if (!data || !data.xAxis || !data.xAxis.length || !data.series || !data.series.length) {
         return getNoDataOption();
     }
 
@@ -600,24 +596,22 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
     let len = data.series.length;
     let series = [];
     let legendData = [];
+    let isYAxis = configObj.valueAxis && configObj.valueAxis === "x";
 
-    let unit = configObj.unit || '';
+    let unit = configObj.unit || "";
     let sumArr = data.xAxis.map(() => {
         return 0;
     });
     data.series.forEach((s, i) => {
         let color = colorArr[i] || colorArr[0];
         let color_ = colorArr[i - 1] || colorArr[0];
-        let barColor =
-            configObj.pictorial === 'diamond'
-                ? getPictorialColor(color, configObj.pictorial)
-                : color;
+        let barColor = configObj.pictorial === "diamond" ? getPictorialColor(color, configObj.pictorial) : color;
         let n = i + 1;
         legendData.push({
             name: s.name,
             itemStyle: {
-                color: color
-            }
+                color: color,
+            },
         });
 
         if (configObj.include) {
@@ -626,45 +620,45 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
                     //柱子
                     name: s.name,
                     data: s.data,
-                    type: 'bar',
-                    barMaxWidth: 'auto',
+                    type: "bar",
+                    barMaxWidth: "auto",
                     barWidth: barWidth,
                     itemStyle: {
-                        color: barColor
+                        color: barColor,
                         // opacity: 0.9
                     },
                     barMinHeight: 1,
                     z: 2 * n,
-                    barGap: '-100%'
+                    barGap: "-100%",
                 },
                 {
                     //柱子的底部图标
                     name: s.name,
                     data: minArr,
                     silent: true,
-                    type: 'pictorialBar',
-                    barMaxWidth: '20',
+                    type: "pictorialBar",
+                    barMaxWidth: "20",
                     symbol: configObj.pictorial,
-                    symbolOffset: [0, '50%'],
+                    symbolOffset: [0, "50%"],
                     symbolSize: [barWidth, barWidth / 2],
                     itemStyle: {
-                        color: barColor
+                        color: barColor,
                     },
 
                     z: 2 * n,
                     tooltip: {
-                        show: false
-                    }
+                        show: false,
+                    },
                 },
                 {
                     //柱子的顶部图标
                     name: s.name,
                     data: s.data,
-                    type: 'pictorialBar',
-                    barMaxWidth: '20',
-                    symbolPosition: 'end',
+                    type: "pictorialBar",
+                    barMaxWidth: "20",
+                    symbolPosition: "end",
                     symbol: configObj.pictorial,
-                    symbolOffset: [0, '-50%'],
+                    symbolOffset: [0, "-50%"],
                     symbolSize: [barWidth, barWidth / 2],
                     z: i > 0 && len > 1 ? 3 * n : 99,
                     itemStyle: {
@@ -673,20 +667,13 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
                             i > 0 && len > 1 && configObj.pictorial === "diamond"
                                 ? getPictorialColor(color_, configObj.pictorial)
                                 : getChangeColor(color_, 0.1), */
-                        color:
-                            i > 0 &&
-                            len > 1 &&
-                            configObj.pictorial === 'diamond'
-                                ? getPictorialColor(color_, configObj.pictorial)
-                                : i > 0 && len > 1
-                                ? color_
-                                : getChangeColor(color_, 0.1)
+                        color: i > 0 && len > 1 && configObj.pictorial === "diamond" ? getPictorialColor(color_, configObj.pictorial) : i > 0 && len > 1 ? color_ : getChangeColor(color_, 0.1),
                     },
                     barMinHeight: 1,
                     silent: true,
                     tooltip: {
-                        show: false
-                    }
+                        show: false,
+                    },
                 }
             );
         } else {
@@ -703,59 +690,70 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
                     //柱子
                     name: s.name,
                     data: s.data,
-                    type: 'bar',
-                    barMaxWidth: 'auto',
+                    type: "bar",
+                    barMaxWidth: "auto",
                     barWidth: barWidth,
                     itemStyle: {
-                        color: barColor
+                        color: barColor,
                     },
                     barMinHeight: 1,
                     z: 2 * n,
-                    stack: 'one'
+                    stack: "one",
+                    xAxisIndex: isYAxis?s.yAxisIndex:s.xAxisIndex,
+                    yAxisIndex: isYAxis?s.xAxisIndex:s.yAxisIndex,
                 },
                 {
                     //柱子的底部图标
                     name: s.name,
                     data: lastSum,
-                    symbolPosition: 'end',
+                    symbolPosition: "end",
                     silent: true,
-                    type: 'pictorialBar',
-                    barMaxWidth: '20',
+                    type: "pictorialBar",
+                    barMaxWidth: "20",
                     symbol: configObj.pictorial,
-                    symbolOffset: [0, '-50%'],
-                    symbolSize: [barWidth, barWidth / 2],
+                    symbolOffset: isYAxis?["50%", 0]:[0, "-50%"],
+                    symbolSize: isYAxis?[barWidth / 2, barWidth]:[barWidth, barWidth / 2],
                     barMinHeight: 1,
                     itemStyle: {
-                        color: barColor
+                        color: barColor,
                     },
 
                     z: 2 * n,
                     tooltip: {
-                        show: false
-                    }
+                        show: false,
+                    },
+                    xAxisIndex: isYAxis?s.yAxisIndex:s.xAxisIndex,
+                    yAxisIndex: isYAxis?s.xAxisIndex:s.yAxisIndex,
                 },
                 {
                     //柱子的顶部图标
                     name: s.name,
                     data: sumArr,
-                    type: 'pictorialBar',
-                    barMaxWidth: '20',
-                    symbolPosition: 'end',
+                    type: "pictorialBar",
+                    barMaxWidth: "20",
+                    symbolPosition: "end",
                     symbol: configObj.pictorial,
-                    symbolOffset: [0, '-50%'],
-                    symbolSize: [barWidth, barWidth / 2],
+                    symbolOffset: isYAxis?["50%", 0]:[0, "-50%"],
+                    symbolSize: isYAxis?[barWidth / 2, barWidth]:[barWidth, barWidth / 2],
                     z: 2 * n + 1,
                     barMinHeight: 1,
                     itemStyle: {
-                        color: getChangeColor(color, 0.1)
+                        color: getChangeColor(color, 0.1),
                     },
                     silent: true,
                     tooltip: {
-                        show: false
-                    }
+                        show: false,
+                    },
+                    xAxisIndex: isYAxis?s.yAxisIndex:s.xAxisIndex,
+                    yAxisIndex: isYAxis?s.xAxisIndex:s.yAxisIndex,
                 }
             );
         }
+
+        // if(isYAxis && v.yAxisIndex != undefined) {
+        //     v.xAxisIndex = v.yAxisIndex;
+        //     delete v.yAxisIndex
+        // }
     });
 
     // console.log(series);
@@ -763,53 +761,70 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
     //类目轴
     let categoryAxis = {
         ...AXIS_STYLE(),
-        type: 'category',
-        data: data.xAxis || data.yAxis || null
+        type: "category",
+        data: data.xAxis || null,
     };
-    categoryAxis.axisLine.show = !data.yAxis; //y轴做类目轴时 不显示
     if (configObj.pictorial) {
         categoryAxis.axisLabel.textStyle = {
-            padding: [5, 0, 0, 0]
+            padding: [5, 0, 0, 0],
         };
+    }
+    if (Array.isArray(data.xAxis)) {
+        let hasData = data.xAxis.some((v) => typeof v === 'object' && Array.isArray(v.data));
+        if(hasData) {
+            categoryAxis = data.xAxis.map(v => {
+                return Object.assign({}, categoryAxis, v);
+            })
+        }else {
+            categoryAxis.data = data.xAxis;
+        }
+    } else if (typeof data.xAxis === "object") {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis);
     }
 
     //数值轴
     let valueAxis = {
         ...AXIS_STYLE(),
-        type: 'value',
+        type: "value",
         name: unit,
         nameTextStyle: {
-            padding: [0, 20, 2, 0]
+            padding: [0, 20, 2, 0],
         },
         axisLine: {
-            show: false
+            show: false,
         },
         splitLine: {
-            show: !data.yAxis, //y轴做类目轴时 不显示
             lineStyle: {
                 color: getBorderColor(),
                 width: 1,
                 // opacity: 0.6,
-                type: 'dashed'
-            }
-        }
+                type: "dashed",
+            },
+        },
     };
+    if (Array.isArray(data.yAxis)) {
+        valueAxis =data.yAxis.map(v => {
+            return Object.assign({}, valueAxis, v);
+        })
+    } else if (typeof data.xAxis === "object") {
+        valueAxis = Object.assign({}, valueAxis, data.xAxis);
+    }
 
     let option = {
         tooltip: {
             ...TOOLTIP(),
-            trigger: 'axis'
+            trigger: "axis",
         },
         grid: CONFIG.GRID,
         color: getColor(configObj.color),
         legend: {
             ...LEGEND(),
             data: legendData,
-            selectedMode: !configObj.pictorial
+            selectedMode: !configObj.pictorial,
         },
-        yAxis: data.yAxis ? categoryAxis : valueAxis,
-        xAxis: data.xAxis ? categoryAxis : valueAxis,
-        series: series
+        xAxis: isYAxis ? valueAxis : categoryAxis,
+        yAxis: isYAxis ? categoryAxis : valueAxis,
+        series: series,
     };
 
     if (opt) {
@@ -838,13 +853,13 @@ export const renderStripeBar = (data, configObj, opt) => {
     }
 
     let seriesData = [];
-    let unit = configObj.unit || '';
+    let unit = configObj.unit || "";
     let max = 0;
     let yAxis = [];
     let barWidth = configObj.barWidth || 10;
     let color = configObj.color || [
         {
-            type: 'linear',
+            type: "linear",
             x: 0,
             y: 0,
             x2: 1,
@@ -852,20 +867,20 @@ export const renderStripeBar = (data, configObj, opt) => {
             colorStops: [
                 {
                     offset: 0,
-                    color: '#459ded' // 0% 处的颜色
+                    color: "#459ded", // 0% 处的颜色
                 },
                 {
                     offset: 1,
-                    color: '#20dbe7' // 100% 处的颜色
-                }
-            ]
+                    color: "#20dbe7", // 100% 处的颜色
+                },
+            ],
         },
-        '#eee'
+        "#eee",
     ];
     data.forEach((v) => {
         if (v.rank !== undefined) {
             let rank = v.rank;
-            yAxis.push(rank + '   ' + v.name);
+            yAxis.push(rank + "   " + v.name);
             seriesData.push(v.value);
         } else {
             yAxis.push(v.name);
@@ -881,64 +896,62 @@ export const renderStripeBar = (data, configObj, opt) => {
             top: 40,
             right: 80,
             left: 10,
-            bottom: 10
+            bottom: 10,
         },
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(),
         },
         yAxis: {
-            type: 'category',
+            type: "category",
             data: yAxis,
             inverse: true,
             axisLabel: {
                 textStyle: {
                     color: getFontColor(),
-                    fontSize: CONFIG.FONT_S
+                    fontSize: CONFIG.FONT_S,
                 },
-                interval: 0
+                interval: 0,
             },
             axisTick: {
-                show: false
+                show: false,
             },
             axisLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         xAxis: {
             show: false,
-            max: max
+            max: max,
         },
         series: [
             {
-                type: 'bar',
+                type: "bar",
                 barWidth: barWidth,
-                barGap: '-100%',
+                barGap: "-100%",
                 data: seriesData.map(() => max), //每个值都取最大值
                 itemStyle: {
                     normal: {
                         barBorderRadius: barWidth / 2,
                         //borderColor: color[1],
-                        color: color[1]
-                    }
+                        color: color[1],
+                    },
                 },
                 label: {
-                    show:
-                        configObj.showLabel ||
-                        configObj.showLabel === undefined,
-                    position: 'right',
+                    show: configObj.showLabel || configObj.showLabel === undefined,
+                    position: "right",
                     color: getFontColor(),
                     padding: [0, 10],
                     formatter: function (o) {
                         let n = seriesData[o.dataIndex];
-                        n = isNaN(n + '') ? '-' : n;
+                        n = isNaN(n + "") ? "-" : n;
                         return n + unit;
-                    }
+                    },
                 },
-                silent: true
+                silent: true,
             },
             {
-                type: 'bar',
-                barGap: '-100%',
+                type: "bar",
+                barGap: "-100%",
                 barWidth: barWidth,
                 data: seriesData,
                 itemStyle: {
@@ -946,11 +959,11 @@ export const renderStripeBar = (data, configObj, opt) => {
                         barBorderRadius: 8,
                         color: color[0],
                         shadowBlur: 0,
-                        shadowColor: '#000'
-                    }
-                }
-            }
-        ]
+                        shadowColor: "#000",
+                    },
+                },
+            },
+        ],
     };
 
     if (opt) {
@@ -977,14 +990,14 @@ export const renderStripeBar2 = (data, configObj, opt) => {
     }
 
     let seriesData = [];
-    let unit = configObj.unit || '';
+    let unit = configObj.unit || "";
     let max = 0;
     let yAxis = [];
     let barWidth = configObj.barWidth || 10;
     data.forEach((v) => {
         if (v.rank !== undefined) {
             let rank = v.rank;
-            yAxis.push(rank + '   ' + v.name);
+            yAxis.push(rank + "   " + v.name);
             seriesData.push(v.value);
         } else {
             yAxis.push(v.name);
@@ -1001,39 +1014,39 @@ export const renderStripeBar2 = (data, configObj, opt) => {
             top: 40,
             right: 80,
             left: 10,
-            bottom: 10
+            bottom: 10,
         },
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(),
         },
         yAxis: {
-            type: 'category',
+            type: "category",
             data: yAxis,
             inverse: true,
             axisLabel: {
                 textStyle: {
-                    fontSize: CONFIG.FONT_S
+                    fontSize: CONFIG.FONT_S,
                 },
-                interval: 0
+                interval: 0,
             },
             axisTick: {
-                show: false
+                show: false,
             },
             axisLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         xAxis: {
             show: false,
-            max: max
+            max: max,
         },
         series: [
             {
-                type: 'pictorialBar',
+                type: "pictorialBar",
                 symbolClip: true,
                 symbol: configObj.pictorial,
-                symbolRepeat: 'fixed',
-                symbolPosition: 'start',
+                symbolRepeat: "fixed",
+                symbolPosition: "start",
                 // symbol: 'image://' + pBar3,
                 symbolBoundingData: max,
                 // symbolOffset: [20, '0'],
@@ -1041,20 +1054,18 @@ export const renderStripeBar2 = (data, configObj, opt) => {
                 symbolRotate: configObj.symbolRotate,
                 symbolMargin: barWidth * 0.3,
                 label: {
-                    show:
-                        configObj.showLabel ||
-                        configObj.showLabel === undefined,
+                    show: configObj.showLabel || configObj.showLabel === undefined,
                     color: getFontColor(),
-                    verticalAlign: 'middle',
-                    position: 'right',
-                    fontWeight: '600',
+                    verticalAlign: "middle",
+                    position: "right",
+                    fontWeight: "600",
                     fontSize: 16,
                     padding: [4, 0, 0, 10],
-                    formatter: '{c}' + unit
+                    formatter: "{c}" + unit,
                 },
-                data: seriesData
-            }
-        ]
+                data: seriesData,
+            },
+        ],
     };
 
     if (opt) {
@@ -1063,9 +1074,6 @@ export const renderStripeBar2 = (data, configObj, opt) => {
 
     return option;
 };
-
-
-
 
 /**
  * 条纹图样式3
@@ -1081,35 +1089,33 @@ export const renderStripeBar3 = (data, configObj, opt) => {
         return getNoDataOption();
     }
 
-	// 新加的方法
+    // 新加的方法
 
-	var defaultData = [];
-	data.forEach(item=>{
-		console.log(item);
-		defaultData.push(item);
-	})
-	let getArrByKey = function(data, k) {
-		let key = k || 'value';
-		let res = [];
-		if (data) {
-			data.forEach(function (t) {
-				res.push(t[key]);
-			});
-		}
-		return res;
-	};
-	let getSymbolData = function(data) {
-		let arr = [];
-		for (var i = 0; i < data.length; i++) {
-			arr.push({
-				value: data[i].value,
-				symbolPosition: 'end',
-			});
-		}
-		return arr;
-	};
-
-
+    var defaultData = [];
+    data.forEach((item) => {
+        console.log(item);
+        defaultData.push(item);
+    });
+    let getArrByKey = function (data, k) {
+        let key = k || "value";
+        let res = [];
+        if (data) {
+            data.forEach(function (t) {
+                res.push(t[key]);
+            });
+        }
+        return res;
+    };
+    let getSymbolData = function (data) {
+        let arr = [];
+        for (var i = 0; i < data.length; i++) {
+            arr.push({
+                value: data[i].value,
+                symbolPosition: "end",
+            });
+        }
+        return arr;
+    };
 
     let seriesData = [];
     let max = 0;
@@ -1117,7 +1123,7 @@ export const renderStripeBar3 = (data, configObj, opt) => {
     data.forEach((v) => {
         if (v.rank !== undefined) {
             let rank = v.rank;
-            yAxis.push(rank + '   ' + v.name);
+            yAxis.push(rank + "   " + v.name);
             seriesData.push(v.value);
         } else {
             yAxis.push(v.name);
@@ -1134,191 +1140,188 @@ export const renderStripeBar3 = (data, configObj, opt) => {
                 y: 0,
                 x2: 1,
                 y2: 0,
-                type: 'linear',
+                type: "linear",
                 global: false,
                 colorStops: [
                     {
                         offset: 0,
-                        color: 'rgb(0,251,253,0)'
+                        color: "rgb(0,251,253,0)",
                     },
                     {
                         offset: 1,
-                        color: 'rgb(0,251,253,1)'
-                    }
-                ]
-            }
+                        color: "rgb(0,251,253,1)",
+                    },
+                ],
+            },
         ],
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(),
         },
-		grid: {
+        grid: {
             containLabel: true,
             top: 40,
             right: 10,
             left: 40,
-            bottom: 10
+            bottom: 10,
         },
-        yAxis:[
-			{
-				triggerEvent: false,
-				show: true,
-				inverse: true,
-				data: getArrByKey(data, 'name'),
-				axisLine: {
-					show: false,
-				},
-				splitLine: {
-					show: false,
-				},
-				axisTick: {
-					show: false,
-				},
-				axisLabel: {
-					show: false,
-					interval: 0,
-					align: 'left',
-					margin: 80,
-					fontSize: CONFIG.FONT_S,
-					formatter: function (value) {
-						return '{title|' + value + '}';
-					},
-					rich: {
-						title: {
-							width: 165,
-						},
-					},
-				},
-			},
-			{
-				triggerEvent: false,
-				show: true,
-				inverse: true,
-				data: getArrByKey(data, 'name'),
-				axisLine: {
-					show: false,
-				},
-				splitLine: {
-					show: false,
-				},
-				axisTick: {
-					show: false,
-				},
+        yAxis: [
+            {
+                triggerEvent: false,
+                show: true,
+                inverse: true,
+                data: getArrByKey(data, "name"),
+                axisLine: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false,
+                },
+                axisLabel: {
+                    show: false,
+                    interval: 0,
+                    align: "left",
+                    margin: 80,
+                    fontSize: CONFIG.FONT_S,
+                    formatter: function (value) {
+                        return "{title|" + value + "}";
+                    },
+                    rich: {
+                        title: {
+                            width: 165,
+                        },
+                    },
+                },
+            },
+            {
+                triggerEvent: false,
+                show: true,
+                inverse: true,
+                data: getArrByKey(data, "name"),
+                axisLine: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false,
+                },
 
-				axisLabel: {
-					interval: 0,
-					shadowOffsetX: '-40px',
-					align: 'right',
-					verticalAlign: 'bottom',
-					lineHeight: 40,
-					fontSize: CONFIG.FONT_S,
-					formatter: function (value, index) {
-						return (
-							'' + data[index].value + '  '
-						);
-					},
-					rich: {
-						percentNumber: {
-							color: '#ff8e2e',
-						},
-					},
-				},
-			},
-		],
+                axisLabel: {
+                    interval: 0,
+                    shadowOffsetX: "-40px",
+                    align: "right",
+                    verticalAlign: "bottom",
+                    lineHeight: 40,
+                    fontSize: CONFIG.FONT_S,
+                    formatter: function (value, index) {
+                        return "" + data[index].value + "  ";
+                    },
+                    rich: {
+                        percentNumber: {
+                            color: "#ff8e2e",
+                        },
+                    },
+                },
+            },
+        ],
         xAxis: {
             show: false,
-            max: max
+            max: max,
         },
         series: [
-			{
-				name: 'XXX',
-				type: 'pictorialBar',
-				symbol:
-					'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAMAAADWZboaAAAAZlBMVEUAAABe3uVe3+Vf3uVf3+Zf3uVg3+Zg3+Zf3+Vi4OZh4OZg3+Z86/Bh3+Zi4Odj4Odi4OZ86/B76/B86/Bj4ed56+9x5+xn4umB7/N87PB36e+A7/N+7fF/7vJ/7vJ+7fGA7/OB7/PReX+lAAAAIXRSTlMABQkVDREmIhk3MR10LEFFPHh7cUprXE35h2XnqMLAp+mHAG9cAAAB5ElEQVRIx83WjU7CMBQFYIoiKMqU/XUboHv/l/Tce7t2XamDNSacETEmX86tlK2rx4py150o+MstMBLwWRfHKo6JCVxLnvmFGBjFQ58oF1//sUZhGy/ClSTWObgnL4O+bkeN4nY2okfNMbkRt9/vtxz8InoTsWplJSCzFxPmO8+GpSIByX3YQAuGDWtRKhKjCnxDXhF6Z4yxnZ20Wgko7BMRDmxtSGVaI4kdTIgb+zTYoJQlIMlDlmUFgrcDWWC201qSayqlTkiCddWWeV62VU0YlnpRi9VOKaSUsiyq/N0krwq2Ugt7lVpZl5BfHNiytjagMi+XYp0kCR45hMlivVQrE/uU5pXSrCB5bM6d1t2lOZItMqmliT3q5uVxqxzyW/ccfYLNKx7ZTeykMvNyac2yt2Fbc61MHLSC0rwoxbiNdlQ3GBm1NLHQsHUrtEXppR/ljNpW6DbSCoqlFiVoN6YdaFlgsSFVPs1BdT8OaB5QyQzVcaqWDows/zepxR8ObLglTrdtCRVuRNj4Rrxh+//0ke2f8KVL+Kon3GCSbmsJN9OUW3j6g0Ns+LgCij2u0h+Sghc8mlMPBMgdx5DFh59VmOVHrvmDnoNxCz3J7MFWsMuaLyR089xz/xhlfijvwutR8gv3zk6BLUUeCgAAAABJRU5ErkJggg==',
-				symbolSize: [50, 50],
-				symbolOffset: [25, 0],
-				z: 12,
-				itemStyle: {
-					normal: {
-						color: '#fff',
-					},
-				},
-				data: getSymbolData(data),
-			},
-			{
-				name: '背景',
-				type: 'bar',
-				barWidth: 10,
-				barGap: '-100%',
-				z: 1,
-				data: defaultData,
-				itemStyle: {
-					normal: {
-						color: '#0b2645',
-						barBorderRadius: 10,
-					},
-				},
-			},
-			{
-				name: '条',
-				type: 'bar',
-				showBackground: true,
-				// backgroundColor:'#fff',
-				barBorderRadius: 30,
-				yAxisIndex: 0,
-				data: data,
-				barWidth: 10,
-				// align: left,
-				itemStyle: {
-					// color: [
-					// 	{
-					// 		x: 0,
-					// 		y: 0,
-					// 		x2: 1,
-					// 		y2: 0,
-					// 		type: 'linear',
-					// 		global: false,
-					// 		colorStops: [
-					// 			{
-					// 				offset: 0,
-					// 				color: '#224059'
-					// 			},
-					// 			{
-					// 				offset: 1,
-					// 				color: '#4AF2F5'
-					// 			}
-					// 		]
-					// 	}
-					// ]
-					// normal: {
+            {
+                name: "XXX",
+                type: "pictorialBar",
+                symbol: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAMAAADWZboaAAAAZlBMVEUAAABe3uVe3+Vf3uVf3+Zf3uVg3+Zg3+Zf3+Vi4OZh4OZg3+Z86/Bh3+Zi4Odj4Odi4OZ86/B76/B86/Bj4ed56+9x5+xn4umB7/N87PB36e+A7/N+7fF/7vJ/7vJ+7fGA7/OB7/PReX+lAAAAIXRSTlMABQkVDREmIhk3MR10LEFFPHh7cUprXE35h2XnqMLAp+mHAG9cAAAB5ElEQVRIx83WjU7CMBQFYIoiKMqU/XUboHv/l/Tce7t2XamDNSacETEmX86tlK2rx4py150o+MstMBLwWRfHKo6JCVxLnvmFGBjFQ58oF1//sUZhGy/ClSTWObgnL4O+bkeN4nY2okfNMbkRt9/vtxz8InoTsWplJSCzFxPmO8+GpSIByX3YQAuGDWtRKhKjCnxDXhF6Z4yxnZ20Wgko7BMRDmxtSGVaI4kdTIgb+zTYoJQlIMlDlmUFgrcDWWC201qSayqlTkiCddWWeV62VU0YlnpRi9VOKaSUsiyq/N0krwq2Ugt7lVpZl5BfHNiytjagMi+XYp0kCR45hMlivVQrE/uU5pXSrCB5bM6d1t2lOZItMqmliT3q5uVxqxzyW/ccfYLNKx7ZTeykMvNyac2yt2Fbc61MHLSC0rwoxbiNdlQ3GBm1NLHQsHUrtEXppR/ljNpW6DbSCoqlFiVoN6YdaFlgsSFVPs1BdT8OaB5QyQzVcaqWDows/zepxR8ObLglTrdtCRVuRNj4Rrxh+//0ke2f8KVL+Kon3GCSbmsJN9OUW3j6g0Ns+LgCij2u0h+Sghc8mlMPBMgdx5DFh59VmOVHrvmDnoNxCz3J7MFWsMuaLyR089xz/xhlfijvwutR8gv3zk6BLUUeCgAAAABJRU5ErkJggg==",
+                symbolSize: [50, 50],
+                symbolOffset: [25, 0],
+                z: 12,
+                itemStyle: {
+                    normal: {
+                        color: "#fff",
+                    },
+                },
+                data: getSymbolData(data),
+            },
+            {
+                name: "背景",
+                type: "bar",
+                barWidth: 10,
+                barGap: "-100%",
+                z: 1,
+                data: defaultData,
+                itemStyle: {
+                    normal: {
+                        color: "#0b2645",
+                        barBorderRadius: 10,
+                    },
+                },
+            },
+            {
+                name: "条",
+                type: "bar",
+                showBackground: true,
+                // backgroundColor:'#fff',
+                barBorderRadius: 30,
+                yAxisIndex: 0,
+                data: data,
+                barWidth: 10,
+                // align: left,
+                itemStyle: {
+                    // color: [
+                    // 	{
+                    // 		x: 0,
+                    // 		y: 0,
+                    // 		x2: 1,
+                    // 		y2: 0,
+                    // 		type: 'linear',
+                    // 		global: false,
+                    // 		colorStops: [
+                    // 			{
+                    // 				offset: 0,
+                    // 				color: '#224059'
+                    // 			},
+                    // 			{
+                    // 				offset: 1,
+                    // 				color: '#4AF2F5'
+                    // 			}
+                    // 		]
+                    // 	}
+                    // ]
+                    // normal: {
                     //     color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-					// 		{
-					// 			offset: 0,
-					// 			color: 'rgb(0,251,253,0)',
-					// 		},
-					// 		{
-					// 			offset: 1,
-					// 			color: 'rgb(0,251,253,1)',
-					// 		},
-					// 	]),
-					// 	barBorderRadius: 10,
+                    // 		{
+                    // 			offset: 0,
+                    // 			color: 'rgb(0,251,253,0)',
+                    // 		},
+                    // 		{
+                    // 			offset: 1,
+                    // 			color: 'rgb(0,251,253,1)',
+                    // 		},
+                    // 	]),
+                    // 	barBorderRadius: 10,
                     // },
-					// barBorderRadius: 4,
-				},
-				label: {
-					normal: {
-						color: '#fff',
-						show: true,
-						position: [0, '-20px'],
-						textStyle: {
-							fontSize: 16,
-						},
-						formatter: function (a) {
-							return a.name;
-						},
-					},
-				},
-			},
-        ]
+                    // barBorderRadius: 4,
+                },
+                label: {
+                    normal: {
+                        color: "#fff",
+                        show: true,
+                        position: [0, "-20px"],
+                        textStyle: {
+                            fontSize: 16,
+                        },
+                        formatter: function (a) {
+                            return a.name;
+                        },
+                    },
+                },
+            },
+        ],
     };
 
     if (opt) {
@@ -1354,8 +1357,8 @@ export const renderCylinderBar = (data, configObj, opt) => {
             seriesData.push({
                 value: v,
                 itemStyle: {
-                    color: color[i] || color[0]
-                }
+                    color: color[i] || color[0],
+                },
             });
         });
     } else {
@@ -1365,59 +1368,59 @@ export const renderCylinderBar = (data, configObj, opt) => {
         color: color.slice(0, 1),
         grid: {
             containLabel: true,
-            left: 0
+            left: 0,
         },
         xAxis: {
-            type: 'category',
+            type: "category",
             data: data.xAxis,
             offset: 5,
             axisLabel: {
                 interval: 0,
                 textStyle: {
-                    fontSize: CONFIG.FONT_S
-                }
+                    fontSize: CONFIG.FONT_S,
+                },
             },
             axisTick: {
-                show: false
+                show: false,
             },
             axisLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         yAxis: {
-            show: false
+            show: false,
         },
         series: [
             {
-                type: 'pictorialBar',
+                type: "pictorialBar",
                 symbolSize: [barWidth, 10],
                 symbolOffset: [0, -5],
-                symbolPosition: 'end',
+                symbolPosition: "end",
                 z: 12,
                 label: {
                     normal: {
                         textStyle: {
-                            color: getFontColor()
+                            color: getFontColor(),
                         },
                         show: true,
-                        position: 'top',
-                        formatter: '{c}' + (configObj.unit || '')
-                    }
+                        position: "top",
+                        formatter: "{c}" + (configObj.unit || ""),
+                    },
                 },
                 silent: true,
-                data: seriesData
+                data: seriesData,
             },
             {
-                name: '',
-                type: 'pictorialBar',
+                name: "",
+                type: "pictorialBar",
                 symbolSize: [barWidth, 10],
                 symbolOffset: [0, 5],
                 z: 12,
                 data: seriesData,
-                silent: true
+                silent: true,
             },
             {
-                type: 'bar',
+                type: "bar",
                 /* itemStyle: {
                     normal: {
                         opacity: 0.8
@@ -1425,20 +1428,17 @@ export const renderCylinderBar = (data, configObj, opt) => {
                 }, */
                 barWidth: barWidth,
                 silent: true,
-                data: seriesData
-            }
-        ]
+                data: seriesData,
+            },
+        ],
     };
 
     if (opt) {
         util.merge(option, opt);
     }
 
-
     return option;
 };
-
-
 
 /**
  *   词云
@@ -1453,44 +1453,42 @@ export const renderWordcloud = (data, configObj, opt) => {
         return getNoDataOption();
     }
 
-	let wordCloudColor = getColor();
+    let wordCloudColor = getColor();
 
-    let option =   {
-		series: [
-			{
-				type: "wordCloud",
-				textPadding: 0,
-				autoSize: {
-					enable: true,
-					minSize: 6
-				},
-				textStyle: {
-					color: () => {
-						const r = Math.floor(
-							Math.random() * wordCloudColor.length
-						);
-						return wordCloudColor[r];
-					}
-				},
-				width: '100%',
-				height: '100%',
-				//数据
-				data: data
-			}
-		]
-	};
+    let option = {
+        series: [
+            {
+                type: "wordCloud",
+                textPadding: 0,
+                autoSize: {
+                    enable: true,
+                    minSize: 6,
+                },
+                textStyle: {
+                    color: () => {
+                        const r = Math.floor(Math.random() * wordCloudColor.length);
+                        return wordCloudColor[r];
+                    },
+                },
+                width: "100%",
+                height: "100%",
+                //数据
+                data: data,
+            },
+        ],
+    };
 
-	// 是否变换展现形式
-	if(configObj.showShape){
-		option.series[0].shape = 'circle';
-		option.series[0].gridSize = 20;
-		option.series[0].sizeRange= [12, 50];
-		option.series[0].rotationRange= [0, 0];
-		option.series[0].autoSize = {
-			"enable": true,
-			"minSize": 18
-		}
-	}
+    // 是否变换展现形式
+    if (configObj.showShape) {
+        option.series[0].shape = "circle";
+        option.series[0].gridSize = 20;
+        option.series[0].sizeRange = [12, 50];
+        option.series[0].rotationRange = [0, 0];
+        option.series[0].autoSize = {
+            enable: true,
+            minSize: 18,
+        };
+    }
 
     if (opt) {
         util.merge(option, opt);
@@ -1498,7 +1496,6 @@ export const renderWordcloud = (data, configObj, opt) => {
 
     return option;
 };
-
 
 /**
  * 彩虹图
@@ -1519,78 +1516,77 @@ export const rainbowchart = (configObj, opt) => {
     let test_data = configObj.data;
     let maxData = Number(test_data[0].value);
     for (let i = 1; i < test_data.length; i++) {
-        maxData =
-            maxData < Number(test_data[i].value) ? test_data[i].value : maxData;
+        maxData = maxData < Number(test_data[i].value) ? test_data[i].value : maxData;
     }
     for (let j in test_data) {
-        if (legend.indexOf(test_data[j]['name'] == -1)) {
+        if (legend.indexOf(test_data[j]["name"] == -1)) {
             legend.push({
-                icon: 'rect',
-                name: test_data[j]['name']
+                icon: "rect",
+                name: test_data[j]["name"],
             });
         }
         let ra = test_data.length - 1 - j;
         seriesd.push({
-            name: test_data[j]['name'],
-            type: 'pie',
-            radius: [ra * 20 + 52 + '%', 43 + ra * 20 + '%'],
+            name: test_data[j]["name"],
+            type: "pie",
+            radius: [ra * 20 + 52 + "%", 43 + ra * 20 + "%"],
             itemStyle: {
                 normal: {
                     label: {
-                        show: false
-                    }
-                }
+                        show: false,
+                    },
+                },
             },
             hoverAnimation: false,
             startAngle: 180,
-            center: ['50%', '75%'],
+            center: ["50%", "75%"],
             data: [
                 {
-                    value: test_data[j]['value'],
-                    name: test_data[j]['name'],
+                    value: test_data[j]["value"],
+                    name: test_data[j]["name"],
                     label: {
                         normal: {
-                            postion: 'center'
-                        }
-                    }
+                            postion: "center",
+                        },
+                    },
                 },
                 {
-                    value: maxData - test_data[j]['value'],
+                    value: maxData - test_data[j]["value"],
                     itemStyle: {
                         normal: {
-                            color: 'rgba(203,203,203,0.5)',
+                            color: "rgba(203,203,203,0.5)",
                             label: {
-                                show: false
+                                show: false,
                             },
                             labelLine: {
-                                show: false
-                            }
+                                show: false,
+                            },
                         },
                         emphasis: {
-                            color: 'rgba(203,203,203,1)'
-                        }
+                            color: "rgba(203,203,203,1)",
+                        },
                     },
-                    name: 'showtip_' + test_data[j]['value']
+                    name: "showtip_" + test_data[j]["value"],
                 },
                 {
                     value: maxData,
                     itemStyle: {
                         normal: {
-                            color: 'rgba(0,0,0,0)',
+                            color: "rgba(0,0,0,0)",
                             label: {
-                                show: true
+                                show: true,
                             },
                             labelLine: {
-                                show: true
-                            }
+                                show: true,
+                            },
                         },
                         emphasis: {
-                            color: 'rgba(0,0,0,0)'
-                        }
+                            color: "rgba(0,0,0,0)",
+                        },
                     },
-                    name: 'hide'
-                }
-            ]
+                    name: "hide",
+                },
+            ],
         });
     }
 
@@ -1601,35 +1597,29 @@ export const rainbowchart = (configObj, opt) => {
             show: true,
             ...TOOLTIP(),
             formatter: function (params) {
-                if (params.name === 'hide') {
+                if (params.name === "hide") {
                     return null;
                 } else {
-                    let num = '';
-                    if (params.name.indexOf('showtip_') != -1) {
-                        num = Number(params.name.split('_')[1]);
+                    let num = "";
+                    if (params.name.indexOf("showtip_") != -1) {
+                        num = Number(params.name.split("_")[1]);
                     } else {
                         num = params.value;
                     }
-                    if (Number(num) === 0)
-                        return params.seriesName + ':' + Number(num) + '';
-                    return (
-                        params.seriesName +
-                        ':' +
-                        parseFloat((num * 100) / maxData).toFixed(2) +
-                        '%'
-                    );
+                    if (Number(num) === 0) return params.seriesName + ":" + Number(num) + "";
+                    return params.seriesName + ":" + parseFloat((num * 100) / maxData).toFixed(2) + "%";
                 }
-            }
+            },
         },
 
         grid: {
             top: 0,
             height: 0,
-            left: '10%',
-            right: '10%'
+            left: "10%",
+            right: "10%",
         },
         series: seriesd,
-        color: getColor(configObj.color)
+        color: getColor(configObj.color),
     };
 
     if (opt) {
@@ -1658,83 +1648,77 @@ export const ringchart = (configObj, opt) => {
     let dataStyle = {
         normal: {
             label: {
-                show: false
+                show: false,
             },
             labelLine: {
-                show: false
+                show: false,
             },
             shadowBlur: 0,
-            shadowColor: 'rgba(40, 40, 40, 0.1)'
-        }
+            shadowColor: "rgba(40, 40, 40, 0.1)",
+        },
     };
     let placeHolderStyle = {
         normal: {
-            color: configObj.color ? getColor(configObj.color[0]) : '#78b4ff', // 未完成的圆环的颜色
+            color: configObj.color ? getColor(configObj.color[0]) : "#78b4ff", // 未完成的圆环的颜色
             label: {
-                show: false
+                show: false,
             },
             labelLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         emphasis: {
-            color: configObj.color ? getColor(configObj.color[0]) : '#78b4ff' // 未完成的圆环的颜色
-        }
+            color: configObj.color ? getColor(configObj.color[0]) : "#78b4ff", // 未完成的圆环的颜色
+        },
     };
 
     let option = {
         title: {
             text: text,
-            x: 'center',
-            y: 'center',
+            x: "center",
+            y: "center",
             subtext: val,
             textStyle: {
-                fontWeight: 'normal',
-                color: configObj.color
-                    ? getColor(configObj.color[0])
-                    : '#78b4ff',
-                fontSize: 18
+                fontWeight: "normal",
+                color: configObj.color ? getColor(configObj.color[0]) : "#78b4ff",
+                fontSize: 18,
             },
             subtextStyle: {
-                color: configObj.color
-                    ? getColor(configObj.color[0])
-                    : '#78b4ff', // 副标题文字颜色
-                fontSize: '25',
-                fontWeight: 'normal'
-            }
+                color: configObj.color ? getColor(configObj.color[0]) : "#78b4ff", // 副标题文字颜色
+                fontSize: "25",
+                fontWeight: "normal",
+            },
         },
         tooltip: {
-            show: false
+            show: false,
         },
         series: [
             {
-                name: 'Pie2',
-                type: 'pie',
+                name: "Pie2",
+                type: "pie",
                 clockWise: false,
-                radius: ['80%', '90%'],
+                radius: ["80%", "90%"],
                 itemStyle: dataStyle,
                 hoverAnimation: false,
-                center: ['50%', '50%'],
+                center: ["50%", "50%"],
                 data: [
                     {
                         value: 100 - Number(val),
                         itemStyle: {
                             normal: {
-                                color: configObj.color
-                                    ? getColor(configObj.color[1])
-                                    : '#eee',
-                                shadowBlur: 0
-                            }
-                        }
+                                color: configObj.color ? getColor(configObj.color[1]) : "#eee",
+                                shadowBlur: 0,
+                            },
+                        },
                     },
                     {
                         value: val,
-                        name: 'invisible',
-                        itemStyle: placeHolderStyle
-                    }
-                ]
-            }
-        ]
+                        name: "invisible",
+                        itemStyle: placeHolderStyle,
+                    },
+                ],
+            },
+        ],
     };
 
     if (opt) {
@@ -1789,39 +1773,39 @@ export const renderHeatmap = (data, configObj, opt) => {
         }
     }
 
-    if (configObj.type === 'piecewise' && configObj.categories) {
+    if (configObj.type === "piecewise" && configObj.categories) {
         let colors = getColor(configObj.color);
         let pieces = [];
         configObj.categories.forEach((v, i) => {
             pieces.push({
                 label: v,
                 value: i + 1,
-                color: colors[i]
+                color: colors[i],
             });
         });
 
         visualMap = [
             {
-                type: 'piecewise',
+                type: "piecewise",
                 pieces: pieces,
                 calculable: false,
-                orient: 'horizontal',
-                left: 'center',
+                orient: "horizontal",
+                left: "center",
                 top: 20,
                 itemWidth: CONFIG.LEGEND_ICON_SIZE,
                 itemHeight: CONFIG.LEGEND_ICON_SIZE,
                 itemSymbol: CONFIG.LEGEND_ICON,
                 textStyle: {
                     color: getFontColor(),
-                    fontSize: CONFIG.FONT_S
-                }
-            }
+                    fontSize: CONFIG.FONT_S,
+                },
+            },
         ];
     } else {
         let max = configObj.max;
         let min = configObj.min;
-        let unit = configObj.unit || '';
-        configObj.color = configObj.color || ['#C7021D', '#79E73C'];
+        let unit = configObj.unit || "";
+        configObj.color = configObj.color || ["#C7021D", "#79E73C"];
         if (min === undefined) {
             min = Math.min(...nums);
         }
@@ -1833,16 +1817,16 @@ export const renderHeatmap = (data, configObj, opt) => {
                 min: min,
                 max: max,
                 calculable: false,
-                orient: 'horizontal',
-                left: 'center',
+                orient: "horizontal",
+                left: "center",
                 top: 20,
                 color: configObj.color,
-                text: ['高' + '      ' + unit, '低'],
+                text: ["高" + "      " + unit, "低"],
                 textStyle: {
                     color: getFontColor(),
-                    fontSize: CONFIG.FONT_S
-                }
-            }
+                    fontSize: CONFIG.FONT_S,
+                },
+            },
         ];
     }
 
@@ -1855,72 +1839,72 @@ export const renderHeatmap = (data, configObj, opt) => {
             formatter: function (v) {
                 let val = v.value[2];
                 if (configObj.categories) {
-                    return configObj.categories[val - 1] || '-';
+                    return configObj.categories[val - 1] || "-";
                 }
                 return val;
-            }
+            },
         },
         grid: CONFIG.GRID,
         xAxis: {
             ...AXIS_STYLE(),
-            type: 'category',
+            type: "category",
             data: xAxis,
             axisLabel: {
                 interval: 0,
                 textStyle: {
-                    fontSize: CONFIG.FONT_S
-                }
+                    fontSize: CONFIG.FONT_S,
+                },
             },
             splitLine: {
-                show: false
+                show: false,
             },
             splitArea: {
                 show: true,
                 areaStyle: {
-                    color: ['rgba(200,200,200,0.3)', 'rgba(200,200,200,0.2)']
-                }
-            }
+                    color: ["rgba(200,200,200,0.3)", "rgba(200,200,200,0.2)"],
+                },
+            },
         },
         yAxis: {
             ...AXIS_STYLE(),
-            type: 'category',
+            type: "category",
             data: yAxis,
             axisLabel: {
                 interval: 0,
                 textStyle: {
-                    fontSize: CONFIG.FONT_S
-                }
-            }
+                    fontSize: CONFIG.FONT_S,
+                },
+            },
         },
         visualMap: visualMap,
         series: [
             {
-                type: 'heatmap',
+                type: "heatmap",
                 data: seriesData,
                 label: {
                     normal: {
                         show: configObj.showLabel !== false,
-                        color: '#fff',
+                        color: "#fff",
                         formatter: function (v) {
                             let val = v.value[2];
                             if (configObj.categories) {
-                                return configObj.categories[val - 1] || '-';
+                                return configObj.categories[val - 1] || "-";
                             }
                             return val;
-                        }
-                    }
+                        },
+                    },
                 },
                 itemStyle: {
                     normal: {
-                        borderColor: 'rgba(255, 255, 255, 0.5)'
+                        borderColor: "rgba(255, 255, 255, 0.5)",
                     },
                     emphasis: {
                         shadowBlur: 0,
-                        shadowColor: 'rgba(255, 255, 255, 0.5)'
-                    }
-                }
-            }
-        ]
+                        shadowColor: "rgba(255, 255, 255, 0.5)",
+                    },
+                },
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -1946,14 +1930,14 @@ export const renderHeatmap = (data, configObj, opt) => {
  * config中配置color 色值为字体色值
  * */
 export const dashboardchart = (configObj, opt) => {
-    let fontColor = '#27e4ae';
+    let fontColor = "#27e4ae";
 
     //size为small  和 mini 缩小样式尺寸
     let size = configObj.size;
     let scale = 1;
-    if (size === 'mini') {
+    if (size === "mini") {
         scale = 0.3;
-    } else if (size === 'small') {
+    } else if (size === "small") {
         scale = 0.5;
     } else if (size && !isNaN(size)) {
         scale = Number(size);
@@ -1972,16 +1956,16 @@ export const dashboardchart = (configObj, opt) => {
     if (configObj.min === undefined || isNaN(configObj.min)) {
         configObj.min = 0;
     }
-    configObj.unit = configObj.unit || '%';
+    configObj.unit = configObj.unit || "%";
 
     let option = {
         //backgroundColor:'#fff',
         title: {
-            show: false
+            show: false,
         },
         series: [
             {
-                type: 'gauge',
+                type: "gauge",
                 splitNumber: scale < 0.8 ? 5 : 10,
                 min: configObj.min,
                 max: configObj.max,
@@ -1990,11 +1974,11 @@ export const dashboardchart = (configObj, opt) => {
                     lineStyle: {
                         width: axisLineWidth,
                         color: [
-                            [0.33, '#e54261'],
-                            [0.66, '#4876e5'],
-                            [1, '#27e4ae']
-                        ]
-                    }
+                            [0.33, "#e54261"],
+                            [0.66, "#4876e5"],
+                            [1, "#27e4ae"],
+                        ],
+                    },
                 },
                 axisTick: {
                     show: true,
@@ -2002,16 +1986,16 @@ export const dashboardchart = (configObj, opt) => {
                     distance: 10 * scale,
                     lineStyle: {
                         width: 1,
-                        color: 'auto'
-                    }
+                        color: "auto",
+                    },
                 },
                 axisLabel: {
                     show: true,
                     distance: 15 * scale,
                     textStyle: {
                         fontSize: 12 * scale,
-                        color: fontColor
-                    }
+                        color: fontColor,
+                    },
                 },
                 splitLine: {
                     show: true,
@@ -2019,28 +2003,28 @@ export const dashboardchart = (configObj, opt) => {
                     length: splitLineLength, //调刻度高度
                     lineStyle: {
                         width: 1,
-                        color: 'auto'
-                    }
+                        color: "auto",
+                    },
                 },
                 pointer: {
                     show: true,
-                    length: '60%',
+                    length: "60%",
                     itemStyle: {
-                        color: '#27e4ae'
+                        color: "#27e4ae",
                     },
-                    width: 6 * scale //指针粗细
+                    width: 6 * scale, //指针粗细
                 },
                 detail: {
-                    formatter: '{value}' + configObj.unit,
-                    offsetCenter: ['0', '50%'],
+                    formatter: "{value}" + configObj.unit,
+                    offsetCenter: ["0", "50%"],
                     textStyle: {
                         fontSize: 24 * scale,
-                        color: fontColor
-                    }
+                        color: fontColor,
+                    },
                 },
-                data: [{ value: configObj.data.value }]
-            }
-        ]
+                data: [{ value: configObj.data.value }],
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -2055,19 +2039,13 @@ export const dashboardchart = (configObj, opt) => {
 export const dashboardchart1 = (configObj, angle = 0) => {
     // let angle = 0;//角度，用来做简单的动画效果的
     let value = configObj.data.value || 0;
-    let unit = configObj.unit || '';
+    let unit = configObj.unit || "";
     let max = configObj.max || 100;
 
     let decorationRadius = configObj.decorationRadius || 0.7; //装饰线条和圆点距离中心的半径比例 >0 <=1
 
-    let bgColor =
-        CONFIG.THEME_COLOR === 'light' ? '#e4e4e4' : 'rgba(255,255,255,0.2)';
-    let colorArr = configObj.color || [
-        '#0CD3DB',
-        bgColor,
-        '#0CD3DB',
-        '#0CD3DB'
-    ]; //依次是 圆环数值区域颜色、圆环背景色、线条颜色、文字颜色
+    let bgColor = CONFIG.THEME_COLOR === "light" ? "#e4e4e4" : "rgba(255,255,255,0.2)";
+    let colorArr = configObj.color || ["#0CD3DB", bgColor, "#0CD3DB", "#0CD3DB"]; //依次是 圆环数值区域颜色、圆环背景色、线条颜色、文字颜色
 
     //获取圆上面某点的坐标(x0,y0表示坐标，r半径，angle角度)
     function getCirlPoint(x0, y0, r, angle) {
@@ -2075,210 +2053,194 @@ export const dashboardchart1 = (configObj, angle = 0) => {
         let y1 = y0 + r * Math.sin((angle * Math.PI) / 180);
         return {
             x: x1,
-            y: y1
+            y: y1,
         };
     }
     let option = {
         title: {
-            text: '{a|' + value + '}{c|' + unit + '}',
-            x: 'center',
-            y: 'center',
+            text: "{a|" + value + "}{c|" + unit + "}",
+            x: "center",
+            y: "center",
             textStyle: {
                 rich: {
                     a: {
                         fontSize: 28,
-                        color: colorArr[3] || getFontColor()
+                        color: colorArr[3] || getFontColor(),
                     },
 
                     c: {
                         fontSize: 14,
-                        color: colorArr[3] || getFontColor()
-                    }
-                }
-            }
+                        color: colorArr[3] || getFontColor(),
+                    },
+                },
+            },
         },
         series: [
             {
-                name: 'ring5',
-                type: 'custom',
-                coordinateSystem: 'none',
+                name: "ring5",
+                type: "custom",
+                coordinateSystem: "none",
                 renderItem: function (params, api) {
                     return {
-                        type: 'arc',
+                        type: "arc",
                         shape: {
                             cx: api.getWidth() / 2,
                             cy: api.getHeight() / 2,
-                            r:
-                                (Math.min(api.getWidth(), api.getHeight()) /
-                                    2) *
-                                decorationRadius,
+                            r: (Math.min(api.getWidth(), api.getHeight()) / 2) * decorationRadius,
                             startAngle: ((0 + angle) * Math.PI) / 180,
-                            endAngle: ((90 + angle) * Math.PI) / 180
+                            endAngle: ((90 + angle) * Math.PI) / 180,
                         },
                         style: {
                             stroke: colorArr[2],
-                            fill: 'transparent',
-                            lineWidth: 1.5
+                            fill: "transparent",
+                            lineWidth: 1.5,
                         },
-                        silent: true
+                        silent: true,
                     };
                 },
-                data: [0]
+                data: [0],
             },
             {
-                name: 'ring5',
-                type: 'custom',
-                coordinateSystem: 'none',
+                name: "ring5",
+                type: "custom",
+                coordinateSystem: "none",
                 renderItem: function (params, api) {
                     return {
-                        type: 'arc',
+                        type: "arc",
                         shape: {
                             cx: api.getWidth() / 2,
                             cy: api.getHeight() / 2,
-                            r:
-                                (Math.min(api.getWidth(), api.getHeight()) /
-                                    2) *
-                                decorationRadius,
+                            r: (Math.min(api.getWidth(), api.getHeight()) / 2) * decorationRadius,
                             startAngle: ((180 + angle) * Math.PI) / 180,
-                            endAngle: ((270 + angle) * Math.PI) / 180
+                            endAngle: ((270 + angle) * Math.PI) / 180,
                         },
                         style: {
                             stroke: colorArr[2],
-                            fill: 'transparent',
-                            lineWidth: 1.5
+                            fill: "transparent",
+                            lineWidth: 1.5,
                         },
-                        silent: true
+                        silent: true,
                     };
                 },
-                data: [0]
+                data: [0],
             },
             {
-                name: 'ring5',
-                type: 'custom',
-                coordinateSystem: 'none',
+                name: "ring5",
+                type: "custom",
+                coordinateSystem: "none",
                 renderItem: function (params, api) {
                     return {
-                        type: 'arc',
+                        type: "arc",
                         shape: {
                             cx: api.getWidth() / 2,
                             cy: api.getHeight() / 2,
-                            r:
-                                (Math.min(api.getWidth(), api.getHeight()) /
-                                    2) *
-                                (decorationRadius - 0.05),
+                            r: (Math.min(api.getWidth(), api.getHeight()) / 2) * (decorationRadius - 0.05),
                             startAngle: ((270 + -angle) * Math.PI) / 180,
-                            endAngle: ((40 + -angle) * Math.PI) / 180
+                            endAngle: ((40 + -angle) * Math.PI) / 180,
                         },
                         style: {
                             stroke: colorArr[2],
-                            fill: 'transparent',
-                            lineWidth: 1.5
+                            fill: "transparent",
+                            lineWidth: 1.5,
                         },
-                        silent: true
+                        silent: true,
                     };
                 },
-                data: [0]
+                data: [0],
             },
             {
-                name: 'ring5',
-                type: 'custom',
-                coordinateSystem: 'none',
+                name: "ring5",
+                type: "custom",
+                coordinateSystem: "none",
                 renderItem: function (params, api) {
                     return {
-                        type: 'arc',
+                        type: "arc",
                         shape: {
                             cx: api.getWidth() / 2,
                             cy: api.getHeight() / 2,
-                            r:
-                                (Math.min(api.getWidth(), api.getHeight()) /
-                                    2) *
-                                (decorationRadius - 0.05),
+                            r: (Math.min(api.getWidth(), api.getHeight()) / 2) * (decorationRadius - 0.05),
                             startAngle: ((90 + -angle) * Math.PI) / 180,
-                            endAngle: ((220 + -angle) * Math.PI) / 180
+                            endAngle: ((220 + -angle) * Math.PI) / 180,
                         },
                         style: {
                             stroke: colorArr[2],
-                            fill: 'transparent',
-                            lineWidth: 1.5
+                            fill: "transparent",
+                            lineWidth: 1.5,
                         },
-                        silent: true
+                        silent: true,
                     };
                 },
-                data: [0]
+                data: [0],
             },
             {
-                name: 'ring5',
-                type: 'custom',
-                coordinateSystem: 'none',
+                name: "ring5",
+                type: "custom",
+                coordinateSystem: "none",
                 renderItem: function (params, api) {
                     let x0 = api.getWidth() / 2;
                     let y0 = api.getHeight() / 2;
-                    let r =
-                        (Math.min(api.getWidth(), api.getHeight()) / 2) *
-                        (decorationRadius - 0.05);
+                    let r = (Math.min(api.getWidth(), api.getHeight()) / 2) * (decorationRadius - 0.05);
                     let point = getCirlPoint(x0, y0, r, 90 + -angle);
                     return {
-                        type: 'circle',
+                        type: "circle",
                         shape: {
                             cx: point.x,
                             cy: point.y,
-                            r: 4
+                            r: 4,
                         },
                         style: {
                             stroke: colorArr[2], //粉
-                            fill: colorArr[2]
+                            fill: colorArr[2],
                         },
-                        silent: true
+                        silent: true,
                     };
                 },
-                data: [0]
+                data: [0],
             },
             {
-                name: 'ring5', //绿点
-                type: 'custom',
-                coordinateSystem: 'none',
+                name: "ring5", //绿点
+                type: "custom",
+                coordinateSystem: "none",
                 renderItem: function (params, api) {
                     let x0 = api.getWidth() / 2;
                     let y0 = api.getHeight() / 2;
-                    let r =
-                        (Math.min(api.getWidth(), api.getHeight()) / 2) *
-                        (decorationRadius - 0.05);
+                    let r = (Math.min(api.getWidth(), api.getHeight()) / 2) * (decorationRadius - 0.05);
                     let point = getCirlPoint(x0, y0, r, 270 + -angle);
                     return {
-                        type: 'circle',
+                        type: "circle",
                         shape: {
                             cx: point.x,
                             cy: point.y,
-                            r: 4
+                            r: 4,
                         },
                         style: {
                             stroke: colorArr[2], //绿
-                            fill: colorArr[2]
+                            fill: colorArr[2],
                         },
-                        silent: true
+                        silent: true,
                     };
                 },
-                data: [0]
+                data: [0],
             },
             {
-                type: 'pie',
-                radius: configObj.radius || ['58%', '45%'],
+                type: "pie",
+                radius: configObj.radius || ["58%", "45%"],
                 silent: true,
                 clockwise: true,
                 startAngle: 90,
                 z: 0,
                 label: {
                     normal: {
-                        position: 'center'
-                    }
+                        position: "center",
+                    },
                 },
                 data: [
                     {
                         value: value,
-                        name: '',
+                        name: "",
                         itemStyle: {
                             normal: {
-                                color: colorArr[0]
+                                color: colorArr[0],
                                 /* color: { // 完成的圆环的颜色
                                     colorStops: [{
                                         offset: 0,
@@ -2288,25 +2250,25 @@ export const dashboardchart1 = (configObj, angle = 0) => {
                                         color: '#28E8FA' // 100% 处的颜色
                                     }]
                                 }, */
-                            }
-                        }
+                            },
+                        },
                     },
                     {
                         value: max - value,
-                        name: '',
+                        name: "",
                         label: {
                             normal: {
-                                show: false
-                            }
+                                show: false,
+                            },
                         },
                         itemStyle: {
                             normal: {
-                                color: colorArr[1]
-                            }
-                        }
-                    }
-                ]
-            }
+                                color: colorArr[1],
+                            },
+                        },
+                    },
+                ],
+            },
 
             /* {
                 name: "",
@@ -2347,7 +2309,7 @@ export const dashboardchart1 = (configObj, angle = 0) => {
                     name: ""
                 }]
             }, */
-        ]
+        ],
     };
 
     return option;
@@ -2360,9 +2322,8 @@ export const dashboardchart2 = (configObj, opt) => {
     let value = configObj.data.value; //数值
     let angle = configObj.angle || 270; //刻度轴角度 180-360
     let barWidth = configObj.barWidth || 20; //轴宽度
-    let title = configObj.title || '';
-    let bgColor =
-        CONFIG.THEME_COLOR === 'light' ? '#e4e4e4' : 'rgba(255,255,255,0.2)';
+    let title = configObj.title || "";
+    let bgColor = CONFIG.THEME_COLOR === "light" ? "#e4e4e4" : "rgba(255,255,255,0.2)";
     let colors = configObj.color || [getColor()[0], bgColor]; //颜色
     let isShowTick = !!configObj.isShowTick;
     let isShowTickLabel = !!configObj.isShowTickLabel;
@@ -2370,8 +2331,8 @@ export const dashboardchart2 = (configObj, opt) => {
     let fontColor = getFontColor();
     let max = configObj.max || 100;
     let min = configObj.min || 0;
-    let unit = configObj.unit === undefined ? '%' : configObj.unit;
-    let textOffset = configObj.textOffset || '40%';
+    let unit = configObj.unit === undefined ? "%" : configObj.unit;
+    let textOffset = configObj.textOffset || "40%";
     if (max != 100) {
         value = (configObj.data.value * 100) / (max - min);
     }
@@ -2379,9 +2340,9 @@ export const dashboardchart2 = (configObj, opt) => {
     //size为small  和 mini 缩小样式尺寸
     let size = configObj.size;
     let scale = 1;
-    if (size === 'mini') {
+    if (size === "mini") {
         scale = 0.3;
-    } else if (size === 'small') {
+    } else if (size === "small") {
         scale = 0.5;
     } else if (size && !isNaN(size)) {
         scale = Number(size);
@@ -2391,121 +2352,121 @@ export const dashboardchart2 = (configObj, opt) => {
         title: [
             {
                 text: title,
-                y: parseFloat(textOffset) - 0 + 35 + '%',
-                x: 'center',
+                y: parseFloat(textOffset) - 0 + 35 + "%",
+                x: "center",
                 textStyle: {
-                    fontWeight: 'normal',
+                    fontWeight: "normal",
                     fontSize: 24 * scale,
-                    color: fontColor
-                }
-            }
+                    color: fontColor,
+                },
+            },
         ],
         angleAxis: {
             show: false,
             max: (100 * 360) / angle, //-45度到225度，二者偏移值是270度除360度
-            type: 'value',
-            startAngle: 180 + (angle - 180) / 2 //极坐标初始角度
+            type: "value",
+            startAngle: 180 + (angle - 180) / 2, //极坐标初始角度
         },
         barWidth: barWidth,
         radiusAxis: {
             show: false,
-            type: 'category'
+            type: "category",
         },
         //圆环位置和大小
         polar: {
-            center: ['50%', '50%'],
-            radius: '180%'
+            center: ["50%", "50%"],
+            radius: "180%",
         },
         series: [
             {
-                type: 'bar',
+                type: "bar",
                 data: [
                     {
                         //上层圆环，显示数据
                         value: value,
                         itemStyle: {
-                            color: colors[0]
-                        }
-                    }
+                            color: colors[0],
+                        },
+                    },
                 ],
-                barGap: '-100%',
-                coordinateSystem: 'polar',
+                barGap: "-100%",
+                coordinateSystem: "polar",
                 roundCap: true, //顶端圆角
-                z: 3
+                z: 3,
             },
             {
                 //下层圆环，显示最大值
-                type: 'bar',
+                type: "bar",
                 data: [
                     {
                         value: 100,
                         itemStyle: {
                             color: colors[1] || bgColor,
-                            borderWidth: 0
-                        }
-                    }
+                            borderWidth: 0,
+                        },
+                    },
                 ],
-                barGap: '-100%',
-                coordinateSystem: 'polar',
+                barGap: "-100%",
+                coordinateSystem: "polar",
                 roundCap: true,
                 z: 2,
-                silent: true
+                silent: true,
             },
             //仪表盘
             {
-                type: 'gauge',
-                radius: '96%',
-                center: ['50%', '50%'],
+                type: "gauge",
+                radius: "96%",
+                center: ["50%", "50%"],
                 startAngle: 270 - (180 - angle / 2), //起始角度，同极坐标
                 endAngle: -90 + (180 - angle / 2), //终止角度，同极坐标
                 max,
                 min,
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 splitLine: {
                     show: isShowTick,
                     lineStyle: {
-                        width: 1
-                    }
+                        width: 1,
+                    },
                 },
                 axisTick: {
-                    show: isShowTick
+                    show: isShowTick,
                 },
                 axisLabel: {
                     show: isShowTick || isShowTickLabel,
                     distance: isShowTick ? 15 : 10,
                     textStyle: {
                         color: fontColor,
-                        fontSize: 14 * scale
-                    }
+                        fontSize: 14 * scale,
+                    },
                 },
 
                 pointer: {
                     // 分隔线
                     show: isShowPointer, //是否显示指针
                     shadowBlur: 0,
-                    length: '70%',
-                    width: '5'
+                    length: "70%",
+                    width: "5",
                 },
                 itemStyle: {
-                    color: colors[0]
+                    color: colors[0],
                 },
                 detail: {
                     show: true,
                     formatter: configObj.data.value + unit,
                     color: fontColor,
                     fontSize: 28 * scale,
-                    fontWeight: 'normal',
-                    offsetCenter: [0, textOffset]
+                    fontWeight: "normal",
+                    offsetCenter: [0, textOffset],
                 },
                 data: [
                     {
-                        value: configObj.data.value
-                    }
-                ]
-            }
-        ]
+                        value: configObj.data.value,
+                    },
+                ],
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -2519,17 +2480,15 @@ export const dashboardchart2 = (configObj, opt) => {
  * */
 export const dashboardchart3 = (configObj, opt) => {
     let value = configObj.data.value; //数值
-    let title = configObj.title || '';
-    let sColor =
-        CONFIG.THEME_COLOR === 'light' ? '#dfefff' : 'rgba(255,255,255,0.2)';
-    let bgColor =
-        CONFIG.THEME_COLOR === 'light' ? '#e4e4e4' : 'rgba(255,255,255,0.2)';
+    let title = configObj.title || "";
+    let sColor = CONFIG.THEME_COLOR === "light" ? "#dfefff" : "rgba(255,255,255,0.2)";
+    let bgColor = CONFIG.THEME_COLOR === "light" ? "#e4e4e4" : "rgba(255,255,255,0.2)";
 
-    let colors = configObj.color || ['#458EFD', '#abd4ff', sColor]; //颜色
+    let colors = configObj.color || ["#458EFD", "#abd4ff", sColor]; //颜色
 
     let max = configObj.max || 100;
     let min = configObj.min || 0;
-    let unit = configObj.unit || '%';
+    let unit = configObj.unit || "%";
 
     let size = configObj.size || 1;
     let scale = Number(size);
@@ -2538,88 +2497,88 @@ export const dashboardchart3 = (configObj, opt) => {
         title: {
             show: true,
             text: title,
-            x: '50%',
-            y: '57%',
+            x: "50%",
+            y: "57%",
             z: 10,
-            textAlign: 'center',
+            textAlign: "center",
             textStyle: {
-                color: '#f1f7fe',
+                color: "#f1f7fe",
                 fontSize: 20 * scale,
-                fontWeight: 'normal'
-            }
+                fontWeight: "normal",
+            },
         },
         series: [
             {
-                type: 'gauge',
-                radius: '65%',
+                type: "gauge",
+                radius: "65%",
                 max,
                 min,
                 axisLine: {
                     lineStyle: {
                         color: [
                             [value / max, colors[0]],
-                            [1, bgColor]
+                            [1, bgColor],
                         ],
-                        width: 14 * scale
-                    }
+                        width: 14 * scale,
+                    },
                 },
                 axisLabel: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
-                    show: false
+                    show: false,
                 },
                 splitLine: {
-                    show: false
+                    show: false,
                 },
                 pointer: {
-                    show: false
-                }
+                    show: false,
+                },
             },
             {
-                name: '外部刻度',
-                type: 'gauge',
-                radius: '100%',
+                name: "外部刻度",
+                type: "gauge",
+                radius: "100%",
                 min, //最小刻度
                 max, //最大刻度
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 //仪表盘文字
                 axisLabel: {
                     show: true,
                     color: colors[0],
                     distance: 30 * scale,
-                    fontSize: 12 * scale
+                    fontSize: 12 * scale,
                 }, //刻度标签。
                 axisTick: {
                     show: true,
                     splitNumber: 7,
                     lineStyle: {
                         color: colors[0], //用颜色渐变函数不起作用
-                        width: 2 * scale
+                        width: 2 * scale,
                     },
-                    length: -8 * scale
+                    length: -8 * scale,
                 }, //刻度样式
                 splitLine: {
                     show: true,
                     length: -12 * scale,
                     lineStyle: {
-                        color: colors[0] //用颜色渐变函数不起作用
-                    }
+                        color: colors[0], //用颜色渐变函数不起作用
+                    },
                 }, //分隔线样式
                 detail: {
-                    show: false
+                    show: false,
                 },
                 pointer: {
-                    show: false
-                }
+                    show: false,
+                },
             },
             /*内部*/
             {
-                type: 'pie',
-                radius: ['0', '40%'],
-                center: ['50%', '50%'],
+                type: "pie",
+                radius: ["0", "40%"],
+                center: ["50%", "50%"],
                 z: 8,
                 hoverAnimation: false,
                 data: [
@@ -2627,79 +2586,79 @@ export const dashboardchart3 = (configObj, opt) => {
                         value: value,
                         itemStyle: {
                             normal: {
-                                color: colors[0]
-                            }
+                                color: colors[0],
+                            },
                         },
                         label: {
                             normal: {
                                 formatter: function (params) {
                                     return params.value + unit;
                                 },
-                                color: '#fff',
+                                color: "#fff",
                                 fontSize: 30 * scale,
-                                fontWeight: 'normal',
-                                position: 'center',
-                                show: true
-                            }
+                                fontWeight: "normal",
+                                position: "center",
+                                show: true,
+                            },
                         },
                         labelLine: {
-                            show: false
-                        }
-                    }
-                ]
+                            show: false,
+                        },
+                    },
+                ],
             },
             /*外一层*/
             {
-                type: 'pie',
-                radius: '45%',
+                type: "pie",
+                radius: "45%",
                 startAngle: 220,
                 endAngle: -40,
                 hoverAnimation: false,
-                center: ['50%', '50%'],
+                center: ["50%", "50%"],
                 avoidLabelOverlap: false,
                 label: {
-                    show: false
+                    show: false,
                 },
                 labelLine: {
-                    show: false
+                    show: false,
                 },
                 data: [
                     {
                         value: 1,
                         itemStyle: {
                             normal: {
-                                color: colors[1]
-                            }
-                        }
-                    }
-                ]
+                                color: colors[1],
+                            },
+                        },
+                    },
+                ],
             },
             //外二层圈
             {
-                type: 'pie',
-                radius: '50%',
-                center: ['50%', '50%'],
+                type: "pie",
+                radius: "50%",
+                center: ["50%", "50%"],
                 avoidLabelOverlap: false,
                 z: 0,
                 hoverAnimation: false,
                 label: {
-                    show: false
+                    show: false,
                 },
                 labelLine: {
-                    show: false
+                    show: false,
                 },
                 data: [
                     {
                         value: 1,
                         itemStyle: {
                             normal: {
-                                color: colors[2]
-                            }
-                        }
-                    }
-                ]
-            }
-        ]
+                                color: colors[2],
+                            },
+                        },
+                    },
+                ],
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -2723,14 +2682,13 @@ export const dashboardchart3 = (configObj, opt) => {
  * */
 export const airwrwchart = (configObj, opt) => {
     let data = configObj.data;
-    let rel = util.getLevelPollution('AQI', data.value);
+    let rel = util.getLevelPollution("AQI", data.value);
     let max = 500;
     let barWidth = configObj.barWidth || 15; //轴宽度
     let angle = configObj.angle || 270; //刻度轴角度 180-360
 
     let value = (data.value * 100) / max;
-    let bgColor =
-        CONFIG.THEME_COLOR === 'light' ? '#e4e4e4' : 'rgba(255,255,255,0.2)';
+    let bgColor = CONFIG.THEME_COLOR === "light" ? "#e4e4e4" : "rgba(255,255,255,0.2)";
     let ringColor = configObj.ringColor || bgColor;
     /*  let bgColor = '#aaa';
     if (configObj.backgroundColor) {
@@ -2738,69 +2696,69 @@ export const airwrwchart = (configObj, opt) => {
     } */
     let option = {
         title: {
-            text: 'AQI',
+            text: "AQI",
             textStyle: {
                 fontSize: 16,
-                color: getFontColor()
+                color: getFontColor(),
             },
-            left: 'center',
-            top: '30%'
+            left: "center",
+            top: "30%",
         },
         angleAxis: {
             show: false,
             max: (100 * 360) / angle, //-45度到225度，二者偏移值是270度除360度
-            type: 'value',
-            startAngle: 180 + (angle - 180) / 2 //极坐标初始角度
+            type: "value",
+            startAngle: 180 + (angle - 180) / 2, //极坐标初始角度
         },
         barWidth: barWidth,
         radiusAxis: {
             show: false,
-            type: 'category'
+            type: "category",
         },
         //圆环位置和大小
         polar: {
-            center: ['50%', '50%'],
-            radius: '160%'
+            center: ["50%", "50%"],
+            radius: "160%",
         },
         series: [
             {
-                type: 'bar',
+                type: "bar",
                 data: [
                     {
                         //上层圆环，显示数据
                         value: value,
                         itemStyle: {
-                            color: rel.color
-                        }
-                    }
+                            color: rel.color,
+                        },
+                    },
                 ],
-                barGap: '-100%',
-                coordinateSystem: 'polar',
+                barGap: "-100%",
+                coordinateSystem: "polar",
                 roundCap: true, //顶端圆角
-                z: 3
+                z: 3,
             },
             {
                 //下层圆环，显示最大值
-                type: 'bar',
+                type: "bar",
                 data: [
                     {
                         value: 100,
                         itemStyle: {
                             color: ringColor,
-                            borderWidth: 0
-                        }
-                    }
+                            borderWidth: 0,
+                        },
+                    },
                 ],
-                barGap: '-100%',
-                coordinateSystem: 'polar',
+                barGap: "-100%",
+                coordinateSystem: "polar",
                 roundCap: true,
                 z: 2,
-                silent: true
+                silent: true,
             },
             {
-                name: 'AQI',
-                type: 'gauge',
-                radius: '90%',
+                name: "AQI",
+                type: "gauge",
+                radius: "90%",
                 startAngle: 245,
                 endAngle: -65,
                 axisLine: {
@@ -2809,9 +2767,9 @@ export const airwrwchart = (configObj, opt) => {
                         width: 20,
                         color: [
                             [data.value / max, rel.color],
-                            [1, '#eee']
-                        ]
-                    }
+                            [1, "#eee"],
+                        ],
+                    },
                 },
                 splitLine: { show: false },
                 axisTick: { show: false },
@@ -2820,28 +2778,28 @@ export const airwrwchart = (configObj, opt) => {
                 pointer: { show: false },
                 itemStyle: {
                     borderWidth: 30,
-                    color: '#0f0'
+                    color: "#0f0",
                 },
                 title: {
                     offsetCenter: [0, 0],
                     color: getFontColor(),
                     fontSize: 20,
-                    fontWeight: 700
+                    fontWeight: 700,
                 },
                 detail: {
-                    formatter: rel.txt || '-',
-                    color: '#fff',
-                    offsetCenter: [0, '30%'],
+                    formatter: rel.txt || "-",
+                    color: "#fff",
+                    offsetCenter: [0, "30%"],
                     backgroundColor: rel.color,
                     borderRadius: 5,
                     fontSize: 16,
                     padding: [2, 10],
                     lineHeight: 25,
-                    width: rel.txt.length * 16
+                    width: rel.txt.length * 16,
                 },
-                data: [{ value: data.value, name: data.value }]
-            }
-        ]
+                data: [{ value: data.value, name: data.value }],
+            },
+        ],
     };
 
     if (opt) {
@@ -2867,55 +2825,53 @@ export const airwrwchart = (configObj, opt) => {
 export const waterPolochart1 = (configObj, opt) => {
     let itemColor = configObj.itemColor || getColor()[0];
     let option = {
-        backgroundColor: configObj.background
-            ? configObj.background
-            : 'rgba(0,0,0,0)',
+        backgroundColor: configObj.background ? configObj.background : "rgba(0,0,0,0)",
         series: [
             {
-                type: 'liquidFill',
+                type: "liquidFill",
                 itemStyle: {
                     // color: itemColor,
                     shadowColor: configObj.shadowColor,
-                    shadowBlur: configObj.shadowColor ? 20 : 0
+                    shadowBlur: configObj.shadowColor ? 20 : 0,
                 },
-                radius: '80%',
+                radius: "80%",
                 // color: getColor(),
                 // data: [configObj.data.value, configObj.data.value],
                 data: [
                     {
                         value: configObj.data.value,
                         itemStyle: {
-                            color: itemColor
-                        }
+                            color: itemColor,
+                        },
                     },
                     {
                         value: configObj.data.value,
                         itemStyle: {
                             color: itemColor,
-                            opacity: 0.8
-                        }
-                    }
+                            opacity: 0.8,
+                        },
+                    },
                 ],
                 outline: {
-                    show: false
+                    show: false,
                 },
 
                 backgroundStyle: {
                     borderWidth: 2,
                     borderColor: configObj.borderColor || itemColor,
-                    color: configObj.backgroundColor || 'transparent'
+                    color: configObj.backgroundColor || "transparent",
                 },
                 label: {
                     normal: {
                         //formatter: (value * 100).toFixed(2) + '%',
                         textStyle: {
                             fontSize: 30,
-                            color: configObj.labelColor
-                        }
-                    }
-                }
-            }
-        ]
+                            color: configObj.labelColor,
+                        },
+                    },
+                },
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -2927,19 +2883,16 @@ export const waterPolochart1 = (configObj, opt) => {
 // 水球图
 export const waterPolochart = (configObj) => {
     let itemColor = configObj.itemColor || getColor()[0];
-    let shadowColor =
-        configObj.shadowColor ||
-        (typeof itemColor === 'string' ? itemColor : getColor()[0]);
-    let value = isNaN(configObj.data.value) ? '0' : configObj.data.value;
+    let shadowColor = configObj.shadowColor || (typeof itemColor === "string" ? itemColor : getColor()[0]);
+    let value = isNaN(configObj.data.value) ? "0" : configObj.data.value;
 
-    let fillColor =
-        typeof itemColor === 'string' ? getColorRgb(itemColor).join(',') : '';
-    let shadowColorStr = getColorRgb(shadowColor).join(',');
+    let fillColor = typeof itemColor === "string" ? getColorRgb(itemColor).join(",") : "";
+    let shadowColorStr = getColorRgb(shadowColor).join(",");
     let scale = configObj.scale || 1;
     let itemNum = configObj.itemNum || 1;
     let color = fillColor
         ? {
-              type: 'linear',
+              type: "linear",
               x: 0,
               y: 1,
               x2: 0,
@@ -2947,13 +2900,13 @@ export const waterPolochart = (configObj) => {
               colorStops: [
                   {
                       offset: 1,
-                      color: [`rgba(${fillColor},0.4)`] // 0% 处的颜色
+                      color: [`rgba(${fillColor},0.4)`], // 0% 处的颜色
                   },
                   {
                       offset: 0,
-                      color: [`rgba(${fillColor}, 1)`] // 100% 处的颜色
-                  }
-              ]
+                      color: [`rgba(${fillColor}, 1)`], // 100% 处的颜色
+                  },
+              ],
           }
         : itemColor;
     let data = [];
@@ -2963,8 +2916,8 @@ export const waterPolochart = (configObj) => {
             value: ((value * scale) / 100) * (1 - 0.1 * n),
             itemStyle: {
                 color,
-                opacity: 1 - n * 0.2
-            }
+                opacity: 1 - n * 0.2,
+            },
         });
     }
 
@@ -2974,37 +2927,37 @@ export const waterPolochart = (configObj) => {
             textStyle: {
                 fontSize: 20,
                 fontWeight: 400,
-                color: configObj.labelColor || getFontColor()
+                color: configObj.labelColor || getFontColor(),
             },
-            x: 'center',
-            y: '40%'
+            x: "center",
+            y: "40%",
         },
         graphic: [
             {
-                type: 'group',
-                left: 'center',
-                top: configObj.title ? '55%' : 'center',
+                type: "group",
+                left: "center",
+                top: configObj.title ? "55%" : "center",
                 children: [
                     {
-                        type: 'text',
+                        type: "text",
                         z: 100,
-                        left: '10',
-                        top: 'middle',
+                        left: "10",
+                        top: "middle",
                         style: {
                             fill: configObj.labelColor || getFontColor(),
-                            text: value + '%',
-                            fontSize: '30',
-                            fontWeight: 'bold'
+                            text: value + "%",
+                            fontSize: "30",
+                            fontWeight: "bold",
                             //   fontFamily: "FZHZGBJW",
-                        }
-                    }
-                ]
-            }
+                        },
+                    },
+                ],
+            },
         ],
         series: [
             {
-                type: 'liquidFill',
-                radius: '80%',
+                type: "liquidFill",
+                radius: "80%",
                 // center: ["50%", "55%"],
                 // waveAnimation: 5, // 动画时长
                 // amplitude: 10, // 振幅
@@ -3031,7 +2984,7 @@ export const waterPolochart = (configObj) => {
                         : itemColor,
                 ], */
                 itemStyle: {
-                    shadowBlur: 0
+                    shadowBlur: 0,
                 },
                 /* color: [
                 {
@@ -3055,58 +3008,55 @@ export const waterPolochart = (configObj) => {
             ], */
                 label: {
                     normal: {
-                        show: false
+                        show: false,
                         //formatter: (value * 100).toFixed(2) + '%',
                         /*  top: '60%',
                     textStyle: {
                         fontSize: 30,
                         color: configObj.labelColor || CONFIG.FONT_COLOR
                     } */
-                    }
+                    },
                 },
                 outline: {
                     show: !!configObj.borderColor,
-                    borderDistance:
-                        configObj.borderDistance === undefined
-                            ? 8
-                            : configObj.borderDistance,
+                    borderDistance: configObj.borderDistance === undefined ? 8 : configObj.borderDistance,
                     itemStyle: {
                         borderWidth: 3,
-                        borderColor: configObj.borderColor
+                        borderColor: configObj.borderColor,
                         /* shadowBlur: 10,
                     shadowColor: '#000', */
-                    }
+                    },
                 },
                 backgroundStyle: {
                     color: configObj.backgroundColor
                         ? configObj.backgroundColor
                         : {
-                              type: 'radial',
+                              type: "radial",
                               x: 0.5,
                               y: 0.5,
                               r: 0.5,
                               colorStops: [
                                   {
                                       offset: 1,
-                                      color: `rgba(${shadowColorStr}, 0.3)`
+                                      color: `rgba(${shadowColorStr}, 0.3)`,
                                   },
                                   {
                                       offset: 0.95,
-                                      color: `rgba(${shadowColorStr}, 0.5)`
+                                      color: `rgba(${shadowColorStr}, 0.5)`,
                                   },
                                   {
                                       offset: 0.8,
-                                      color: `rgba(${shadowColorStr}, 0.3)`
+                                      color: `rgba(${shadowColorStr}, 0.3)`,
                                   },
                                   {
                                       offset: 0.4,
-                                      color: `rgba(${shadowColorStr}, 0.01)`
-                                  }
-                              ]
-                          }
-                }
-            }
-        ]
+                                      color: `rgba(${shadowColorStr}, 0.01)`,
+                                  },
+                              ],
+                          },
+                },
+            },
+        ],
     };
 
     return option;
@@ -3133,25 +3083,33 @@ export const renderLine = (data, configObj, opt) => {
     data = util.merge({}, data);
     let hasBar = false; //是否混合有柱型图
     let color = getColor(configObj.color);
+    let isYAxis = configObj.valueAxis && configObj.valueAxis === "x";
+
     data.series.map((v, i) => {
-        v.type = v.type || 'line';
-        v.symbol = 'circle';
+        v.type = v.type || "line";
+        v.symbol = "circle";
         v.symbolSize = 2;
-        if (v.type === 'bar') {
+        if (v.type === "bar") {
             hasBar = true;
             v.barMaxWidth = 20;
         }
-        if(configObj.smooth) {
+        if (configObj.smooth) {
             v.smooth = configObj.smooth !== false;
-        }else {
+        } else {
             v.smooth = CONFIG.LINE_SMOOTH;
         }
         v.connectNulls = configObj.connectNulls !== false;
+
+        if(isYAxis && v.yAxisIndex != undefined) {
+            v.xAxisIndex = v.yAxisIndex;
+            delete v.yAxisIndex
+        }
+
         if (configObj.showLabel) {
             v.label = {
                 show: true,
                 color: getFontColor(),
-                position: 'top'
+                position: "top",
             };
         }
 
@@ -3162,7 +3120,7 @@ export const renderLine = (data, configObj, opt) => {
                 //区域填充样式
                 normal: {
                     color: {
-                        type: 'linear',
+                        type: "linear",
                         x: 0,
                         y: 0,
                         x2: 0,
@@ -3170,70 +3128,82 @@ export const renderLine = (data, configObj, opt) => {
                         colorStops: [
                             {
                                 offset: 0,
-                                color: `rgba(${fillColor.join(',')})` // 0% 处的颜色
+                                color: `rgba(${fillColor.join(",")})`, // 0% 处的颜色
                             },
                             {
                                 offset: 1,
-                                color: `rgba(${fillColor_.join(',')})` // 100% 处的颜色
-                            }
-                        ]
+                                color: `rgba(${fillColor_.join(",")})`, // 100% 处的颜色
+                            },
+                        ],
                     },
-                    shadowColor: 'rgba(0, 0, 0, 0.1)',
-                    shadowBlur: 0
-                }
+                    shadowColor: "rgba(0, 0, 0, 0.1)",
+                    shadowBlur: 0,
+                },
             };
         }
     });
     //类目轴
     let categoryAxis = {
         ...AXIS_STYLE(),
-        type: 'category',
-        data: data.xAxis || data.yAxis || null,
-        boundaryGap: hasBar
+        type: "category",
+        data: data.xAxis || null,
+        boundaryGap: hasBar,
     };
-    if(Array.isArray(data.xAxis)) {
-        categoryAxis.data = data.xAxis
-    }else if(typeof data.xAxis === 'object') {
-        categoryAxis = Object.assign({}, categoryAxis, data.xAxis)
+    if (Array.isArray(data.xAxis)) {
+        let hasData = data.xAxis.some((v) => typeof v === 'object' && Array.isArray(v.data));
+        if(hasData) {
+            categoryAxis = data.xAxis.map(v => {
+                return Object.assign({}, categoryAxis, v);
+            })
+        }else {
+            categoryAxis.data = data.xAxis;
+        }
+    } else if (typeof data.xAxis === "object") {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis);
     }
-    categoryAxis.axisLine.show = !data.yAxis; //y轴做类目轴时 不显示
 
     //数值轴
     let valueAxis = {
         ...AXIS_STYLE(),
-        type: 'value',
-        name: configObj.unit || '',
+        type: "value",
+        name: configObj.unit || "",
         nameTextStyle: {
-            padding: [0, 20, 2, 0]
+            padding: [0, 20, 2, 0],
         },
         axisLine: {
-            show: false
+            show: false,
         },
         splitLine: {
-            show: !data.yAxis, //y轴做类目轴时 不显示
             lineStyle: {
                 color: getBorderColor(),
                 width: 1,
                 // opacity: 0.6,
-                type: 'dashed'
-            }
-        }
+                type: "dashed",
+            },
+        },
     };
+    if (Array.isArray(data.yAxis)) {
+        valueAxis =data.yAxis.map(v => {
+            return Object.assign({}, valueAxis, v);
+        })
+    } else if (typeof data.xAxis === "object") {
+        valueAxis = Object.assign({}, valueAxis, data.xAxis);
+    }
+
+
     let option = {
         legend: {
-            ...LEGEND()
-            //itemWidth: hasBar ? 10 : 20
+            ...LEGEND(),
         },
-        color: getColor(configObj.color),
+        color: color,
         grid: CONFIG.GRID,
-        xAxis: data.xAxis ? categoryAxis : valueAxis,
-        yAxis: data.yAxis ? categoryAxis : valueAxis,
-
+        xAxis: isYAxis ? valueAxis : categoryAxis,
+        yAxis: isYAxis ? categoryAxis : valueAxis,
         series: data.series,
         tooltip: {
             ...TOOLTIP(),
-            trigger: 'axis'
-        }
+            trigger: "axis",
+        },
     };
 
     if (configObj.markLine) {
@@ -3274,97 +3244,99 @@ export const renderBar = (data, configObj, opt) => {
 
     let legendData = [];
 
+    let isYAxis = configObj.valueAxis && configObj.valueAxis === "x";
+
     data.series.map((v, i) => {
-        v.type = v.type || 'bar';
-        if (v.type === 'line') {
-            if(configObj.smooth) {
+        v.type = v.type || "bar";
+        if (v.type === "line") {
+            if (configObj.smooth) {
                 v.smooth = configObj.smooth !== false;
-            }else {
+            } else {
                 v.smooth = CONFIG.LINE_SMOOTH;
             }
-            v.symbol = 'circle';
+            v.symbol = "circle";
             v.symbolSize = 2;
             v.connectNulls = true;
         } else {
-            v.barMaxWidth = configObj.barMaxWidth || '60%';
+            v.barMaxWidth = configObj.barMaxWidth || "60%";
             v.barWidth = barWidth;
 
             if (configObj.pictorial) {
                 v.itemStyle = {
-                    opacity: 1
+                    opacity: 1,
                 };
             }
 
-			// 顶部圆角
-			if(configObj.topRing){
-				v.itemStyle = {
-					normal: {
-						barBorderRadius: [30, 30, 0, 0]
-					}
-				}
-			}
+            // 顶部圆角
+            if (configObj.topRing) {
+                v.itemStyle = {
+                    normal: {
+                        barBorderRadius: [30, 30, 0, 0],
+                    },
+                };
+            }
 
-			// 右边圆角
-			if(configObj.rightRing){
-				v.itemStyle = {
-					normal: {
-						barBorderRadius: [0, 30, 30, 0]
-					}
-				}
-			}
+            // 右边圆角
+            if (configObj.rightRing) {
+                v.itemStyle = {
+                    normal: {
+                        barBorderRadius: [0, 30, 30, 0],
+                    },
+                };
+            }
 
-			// 顶部，底部圆环
-			if(configObj.tbRing){
-				v.itemStyle = {
-					normal: {
-						barBorderRadius: [30, 30, 30, 30]
-					}
-				}
-			}
-
+            // 顶部，底部圆环
+            if (configObj.tbRing) {
+                v.itemStyle = {
+                    normal: {
+                        barBorderRadius: [30, 30, 30, 30],
+                    },
+                };
+            }
 
             if (configObj.pictorial) {
                 let itemColor = colors[i];
 
-                v.itemStyle.color = getPictorialColor(
-                    itemColor,
-                    configObj.pictorial
-                );
+                v.itemStyle.color = getPictorialColor(itemColor, configObj.pictorial);
             }
+        }
+
+        if(isYAxis && v.yAxisIndex != undefined) {
+            v.xAxisIndex = v.yAxisIndex;
+            delete v.yAxisIndex
         }
 
         if (configObj.showLabel) {
             v.label = {
                 show: true,
                 color: getFontColor(),
-                position: data.yAxis ? 'right' : 'top'
+                position: data.yAxis ? "right" : "top",
             };
         }
     });
 
     let bars = data.series.filter((v) => {
-        return v.type !== 'line';
+        return v.type !== "line";
     });
 
     if (configObj.pictorial && bars.length <= 5) {
         //象形柱状图图标横向偏移距离
         let symbolOffsetXObj = {
-            1: '0',
-            2: ['-60%', '60%'],
-            3: ['-120%', 0, '120%'],
-            4: ['-180%', '-60%', '60%', '180%'],
-            5: ['-240%', '-120%', 0, '120%', '240%']
+            1: "0",
+            2: ["-60%", "60%"],
+            3: ["-120%", 0, "120%"],
+            4: ["-180%", "-60%", "60%", "180%"],
+            5: ["-240%", "-120%", 0, "120%", "240%"],
         };
 
-        let symbolOffsetXArr =
-            configObj.symbolOffsetXArr || symbolOffsetXObj[bars.length];
+        let symbolOffsetXArr = configObj.symbolOffsetXArr || symbolOffsetXObj[bars.length];
 
         bars.forEach((v, i) => {
             legendData.push({
                 name: v.name,
                 itemStyle: {
-                    color: colors[i]
-                }
+                    color: colors[i],
+                },
             });
 
             let itemColor = colors[i];
@@ -3377,30 +3349,30 @@ export const renderBar = (data, configObj, opt) => {
                     tooltip: { show: false },
                     name: v.name,
                     data: v.data,
-                    type: 'pictorialBar',
+                    type: "pictorialBar",
                     symbol: configObj.pictorial,
-                    symbolPosition: 'start',
-                    symbolOffset: [symbolOffsetX, '50%'],
+                    symbolPosition: "start",
+                    symbolOffset: [symbolOffsetX, "50%"],
                     symbolSize: [barWidth, barWidth / 2.5],
                     z: 2,
                     itemStyle: {
-                        color: barColor
+                        color: barColor,
                         // color: v.name ? barColor : colors[0]
-                    }
+                    },
                 },
                 {
                     name: v.name,
                     tooltip: { show: false },
                     data: v.data,
-                    type: 'pictorialBar',
+                    type: "pictorialBar",
                     symbol: configObj.pictorial,
-                    symbolPosition: 'end',
-                    symbolOffset: [symbolOffsetX, '-50%'],
+                    symbolPosition: "end",
+                    symbolOffset: [symbolOffsetX, "-50%"],
                     symbolSize: [barWidth, barWidth / 2.5],
                     z: 3,
                     itemStyle: {
-                        color: getChangeColor(itemColor, 0.1)
-                    }
+                        color: getChangeColor(itemColor, 0.1),
+                    },
                 }
             );
         });
@@ -3409,52 +3381,71 @@ export const renderBar = (data, configObj, opt) => {
     //类目轴
     let categoryAxis = {
         ...AXIS_STYLE(),
-        type: 'category',
-        data: data.xAxis || data.yAxis || null
+        type: "category",
+        data: data.xAxis || data.yAxis || null,
     };
-    if(Array.isArray(data.xAxis)) {
-        categoryAxis.data = data.xAxis
-    }else if(typeof data.xAxis === 'object') {
-        categoryAxis = Object.assign({}, categoryAxis, data.xAxis)
+    if (Array.isArray(data.xAxis)) {
+        categoryAxis.data = data.xAxis;
+    } else if (typeof data.xAxis === "object") {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis);
     }
-    categoryAxis.axisLine.show = !data.yAxis; //y轴做类目轴时 不显示
+    if (Array.isArray(data.xAxis)) {
+        let hasData = data.xAxis.some((v) => typeof v === 'object' && Array.isArray(v.data));
+        if(hasData) {
+            categoryAxis = data.xAxis.map(v => {
+                return Object.assign({}, categoryAxis, v);
+            })
+        }else {
+            categoryAxis.data = data.xAxis;
+        }
+    } else if (typeof data.xAxis === "object") {
+        categoryAxis = Object.assign({}, categoryAxis, data.xAxis);
+    }
 
     //数值轴
     let valueAxis = {
         ...AXIS_STYLE(),
-        type: 'value',
-        name: configObj.unit || '',
+        type: "value",
+        name: configObj.unit || "",
         nameTextStyle: {
-            padding: [0, 20, 2, 0]
+            padding: [0, 20, 2, 0],
         },
         axisLine: {
-            show: false
+            show: false,
         },
         splitLine: {
-            show: !data.yAxis, //y轴做类目轴时 不显示
             lineStyle: {
                 color: getBorderColor(),
                 width: 1,
                 // opacity: 0.6,
-                type: 'dashed'
-            }
-        }
+                type: "dashed",
+            },
+        },
     };
+
+    if (Array.isArray(data.yAxis)) {
+        valueAxis =data.yAxis.map(v => {
+            return Object.assign({}, valueAxis, v);
+        })
+    } else if (typeof data.xAxis === "object") {
+        valueAxis = Object.assign({}, valueAxis, data.xAxis);
+    }
+
     let option = {
         legend: {
             ...LEGEND(),
             selectedMode: !configObj.pictorial,
-            data: configObj.pictorial ? legendData : null
+            data: configObj.pictorial ? legendData : null,
         },
         color: getColor(configObj.color),
         grid: CONFIG.GRID,
-        xAxis: data.xAxis ? categoryAxis : valueAxis,
-        yAxis: data.yAxis ? categoryAxis : valueAxis,
+        xAxis: isYAxis ? valueAxis : categoryAxis,
+        yAxis: isYAxis ? categoryAxis : valueAxis,
         series: data.series.concat(series_),
         tooltip: {
             ...TOOLTIP(),
-            trigger: 'axis'
-        }
+            trigger: "axis",
+        },
     };
     if (opt) {
         util.merge(option, opt);
@@ -3480,23 +3471,23 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
     //类目轴
     let categoryAxis = {
         ...AXIS_STYLE(),
-        type: 'category',
+        type: "category",
         data: data.xAxis,
         splitLine: {
-            show: false
-        }
+            show: false,
+        },
     };
 
     //数值轴
     let valueAxis = {
         ...AXIS_STYLE(),
-        type: 'value',
-        name: configObj.unit || '',
+        type: "value",
+        name: configObj.unit || "",
         nameTextStyle: {
-            padding: [0, 20, 2, 0]
+            padding: [0, 20, 2, 0],
         },
         axisLine: {
-            show: false
+            show: false,
         },
         splitLine: {
             show: true,
@@ -3504,9 +3495,9 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
                 color: getBorderColor(),
                 width: 1,
                 // opacity: 0.6,
-                type: 'dashed'
-            }
-        }
+                type: "dashed",
+            },
+        },
     };
 
     // 绘制左侧面
@@ -3517,7 +3508,7 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
     const CubeLeft = echarts.graphic.extendShape({
         shape: {
             x: 0,
-            y: 0
+            y: 0,
         },
         buildPath: function (ctx, shape) {
             const xAxisPoint = shape.xAxisPoint;
@@ -3525,18 +3516,14 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
             const c1 = [shape.x - w2, shape.y];
             const c2 = [shape.x - w2, xAxisPoint[1]];
             const c3 = [shape.x, xAxisPoint[1]];
-            ctx.moveTo(c0[0], c0[1])
-                .lineTo(c1[0], c1[1])
-                .lineTo(c2[0], c2[1])
-                .lineTo(c3[0], c3[1])
-                .closePath();
-        }
+            ctx.moveTo(c0[0], c0[1]).lineTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).closePath();
+        },
     });
     // 绘制右侧面
     const CubeRight = echarts.graphic.extendShape({
         shape: {
             x: 0,
-            y: 0
+            y: 0,
         },
         buildPath: function (ctx, shape) {
             const xAxisPoint = shape.xAxisPoint;
@@ -3544,18 +3531,14 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
             const c2 = [shape.x, xAxisPoint[1]];
             const c3 = [shape.x + w1, xAxisPoint[1] - w2 + snapHeight];
             const c4 = [shape.x + w1, shape.y - w2 + snapHeight];
-            ctx.moveTo(c1[0], c1[1])
-                .lineTo(c2[0], c2[1])
-                .lineTo(c3[0], c3[1])
-                .lineTo(c4[0], c4[1])
-                .closePath();
-        }
+            ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath();
+        },
     });
     // 绘制顶面
     const CubeTop = echarts.graphic.extendShape({
         shape: {
             x: 0,
-            y: 0
+            y: 0,
         },
         buildPath: function (ctx, shape) {
             //
@@ -3563,17 +3546,13 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
             const c2 = [shape.x + w1, shape.y - w2 + snapHeight]; //右点
             const c3 = [shape.x - w2 + w1, shape.y - w2 + snapHeight];
             const c4 = [shape.x - w2, shape.y];
-            ctx.moveTo(c1[0], c1[1])
-                .lineTo(c2[0], c2[1])
-                .lineTo(c3[0], c3[1])
-                .lineTo(c4[0], c4[1])
-                .closePath();
-        }
+            ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath();
+        },
     });
     // 三个面图形
-    echarts.graphic.registerShape('CubeLeft', CubeLeft);
-    echarts.graphic.registerShape('CubeRight', CubeRight);
-    echarts.graphic.registerShape('CubeTop', CubeTop);
+    echarts.graphic.registerShape("CubeLeft", CubeLeft);
+    echarts.graphic.registerShape("CubeRight", CubeRight);
+    echarts.graphic.registerShape("CubeTop", CubeTop);
 
     let n = -(data.series.length - 1) / 2;
 
@@ -3581,75 +3560,68 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
     data.series.forEach((v, idx) => {
         colors_.push(customColor[idx] ? customColor[idx].top : colors[idx]);
         series.push({
-            name: v.name || '',
-            type: 'custom',
+            name: v.name || "",
+            type: "custom",
             renderItem: (params, api) => {
                 const location = api.coord([api.value(0), api.value(1)]);
-                location[0] =
-                    location[0] + wid * (n + idx) * (1 + Number(barGap));
+                location[0] = location[0] + wid * (n + idx) * (1 + Number(barGap));
                 const xlocation = api.coord([api.value(0), 0]);
                 xlocation[0] = xlocation[0] + wid * 0;
                 return {
-                    type: 'group',
+                    type: "group",
                     children: [
                         {
-                            type: 'CubeLeft',
+                            type: "CubeLeft",
                             shape: {
                                 api,
                                 xValue: api.value(0),
                                 yValue: api.value(1),
                                 x: location[0],
                                 y: location[1],
-                                xAxisPoint: xlocation
+                                xAxisPoint: xlocation,
                             },
                             style: {
-                                fill: customColor[idx]
-                                    ? customColor[idx].left
-                                    : colors[idx]
-                            }
+                                fill: customColor[idx] ? customColor[idx].left : colors[idx],
+                            },
                         },
                         {
-                            type: 'CubeRight',
+                            type: "CubeRight",
                             shape: {
                                 api,
                                 xValue: api.value(0),
                                 yValue: api.value(1),
                                 x: location[0] - 1,
                                 y: location[1],
-                                xAxisPoint: xlocation
+                                xAxisPoint: xlocation,
                             },
                             style: {
-                                fill: customColor[idx]
-                                    ? customColor[idx].right
-                                    : getChangeColor(colors[idx], 0.1)
-                            }
+                                fill: customColor[idx] ? customColor[idx].right : getChangeColor(colors[idx], 0.1),
+                            },
                         },
                         {
-                            type: 'CubeTop',
+                            type: "CubeTop",
                             shape: {
                                 api,
                                 xValue: api.value(0),
                                 yValue: api.value(1),
                                 x: location[0],
                                 y: location[1] + 1,
-                                xAxisPoint: xlocation
+                                xAxisPoint: xlocation,
                             },
                             style: {
-                                fill: customColor[idx]
-                                    ? customColor[idx].top
-                                    : getChangeColor(colors[idx], -0.1)
-                            }
-                        }
-                    ]
+                                fill: customColor[idx] ? customColor[idx].top : getChangeColor(colors[idx], -0.1),
+                            },
+                        },
+                    ],
                 };
             },
-            data: v.data
+            data: v.data,
         });
     });
 
     let option = {
         legend: {
-            ...LEGEND()
+            ...LEGEND(),
             // selectedMode: !configObj.pictorial,
             // data: configObj.pictorial ? legendData: null
         },
@@ -3660,12 +3632,12 @@ export const renderSimulated3DBar = (data, configObj, opt) => {
 
         tooltip: {
             ...TOOLTIP(),
-            trigger: 'axis',
+            trigger: "axis",
             axisPointer: {
-                type: 'shadow'
-            }
+                type: "shadow",
+            },
         },
-        series: series
+        series: series,
     };
 
     if (opt) {
@@ -3696,39 +3668,36 @@ export const renderRadar = (data, configObj, opt) => {
     let vals = [];
     let color = getColor(configObj.color);
     let seriesData = [];
-    configObj.areaColor = configObj.areaColor || [
-        'rgba(0, 0, 0, 0)',
-        'rgba(0, 0, 0, 0)'
-    ];
+    configObj.areaColor = configObj.areaColor || ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"];
     data.series.forEach((v, i) => {
-        let fillColor = getColorRgb(color[i]).join(',');
+        let fillColor = getColorRgb(color[i]).join(",");
         let areaStyle = {
             // color: `rgba(${fillColor.join(',')})`
             color: {
-                type: 'radial',
+                type: "radial",
                 x: 0.5,
                 y: 0.5,
                 r: 0.5,
                 colorStops: [
                     {
                         offset: 0,
-                        color: `rgba(${fillColor}, 0.14)` // 0% 处的颜色
+                        color: `rgba(${fillColor}, 0.14)`, // 0% 处的颜色
                     },
                     {
                         offset: 0.15,
-                        color: `rgba(${fillColor}, 0.14)` // 100% 处的颜色
+                        color: `rgba(${fillColor}, 0.14)`, // 100% 处的颜色
                     },
                     {
                         offset: 0.75,
-                        color: `rgba(${fillColor}, 0.4)` // 100% 处的颜色
+                        color: `rgba(${fillColor}, 0.4)`, // 100% 处的颜色
                     },
                     {
                         offset: 1,
-                        color: `rgba(${fillColor}, 0.5)` // 100% 处的颜色
-                    }
+                        color: `rgba(${fillColor}, 0.5)`, // 100% 处的颜色
+                    },
                 ],
-                global: false // 缺省为 false
-            }
+                global: false, // 缺省为 false
+            },
         };
         v.value.forEach((num) => {
             if (!isNaN(num)) {
@@ -3741,24 +3710,24 @@ export const renderRadar = (data, configObj, opt) => {
             itemStyle: {
                 // borderColor: color[i],
                 // color: configObj.symbolColor || color[i],
-                color: color[i]
+                color: color[i],
                 // borderWidth: 0.2,
             },
             lineStyle: {
                 // color: color[i],
-                width: 1
-            }
+                width: 1,
+            },
         });
     });
     max = Math.max(...vals);
     data.indicator.forEach((v) => {
-        if (typeof v === 'object') {
+        if (typeof v === "object") {
             v.max = v.max === undefined ? max : max;
             indicator.push(v);
-        } else if (typeof v === 'string') {
+        } else if (typeof v === "string") {
             indicator.push({
                 name: v,
-                max: max
+                max: max,
             });
         }
     });
@@ -3766,40 +3735,40 @@ export const renderRadar = (data, configObj, opt) => {
     let option = {
         color: getColor(configObj.color),
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(),
         },
         radar: {
-            radius: '60%',
+            radius: "60%",
             splitArea: {
                 areaStyle: {
-                    color: configObj.areaColor
-                }
+                    color: configObj.areaColor,
+                },
             },
             indicator: indicator,
             name: {
                 textStyle: {
-                    color: getFontColor()
-                }
+                    color: getFontColor(),
+                },
             },
             axisLine: {
                 lineStyle: {
-                    color: configObj.lineColor || getBorderColor()
-                }
+                    color: configObj.lineColor || getBorderColor(),
+                },
             },
             splitLine: {
                 lineStyle: {
-                    color: configObj.lineColor || getBorderColor()
-                }
-            }
+                    color: configObj.lineColor || getBorderColor(),
+                },
+            },
         },
         series: [
             {
-                type: 'radar',
+                type: "radar",
                 data: seriesData,
-                symbol: 'circle',
-                symbolSize: 8
-            }
-        ]
+                symbol: "circle",
+                symbolSize: 8,
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -3827,37 +3796,37 @@ export const renderSanKey = (data, configObj, opt) => {
     let leftItems = []; //左侧项
     let links = [];
     let itemName = [];
-    let leftColor = configObj.leftColor || ['#055165', '#076983'];
+    let leftColor = configObj.leftColor || ["#055165", "#076983"];
     let rightColor = configObj.rightColor || [
-        'rgb(113, 127, 231)',
-        'rgb(99, 144, 235)',
-        'rgb(71, 120, 217)',
-        'rgb(45, 97, 201)',
-        'rgb(42, 137, 218)',
-        'rgb(30, 157, 216)',
-        'rgb(25, 136, 187)',
-        'rgb(31, 165, 185)',
-        'rgb(18, 131, 148)',
-        'rgb(21, 175, 170)',
-        'rgb(15, 149, 138)',
-        'rgb(12, 149, 118)',
-        'rgb(15, 140, 88)',
-        'rgb(13, 136, 42)',
-        'rgb(107, 183, 57)',
-        'rgb(133, 184, 34)',
-        'rgb(173, 182, 31)',
-        'rgb(209, 189, 57)',
-        'rgb(224, 167, 68)',
-        'rgb(205, 131, 51)',
-        'rgb(210, 106, 54)'
+        "rgb(113, 127, 231)",
+        "rgb(99, 144, 235)",
+        "rgb(71, 120, 217)",
+        "rgb(45, 97, 201)",
+        "rgb(42, 137, 218)",
+        "rgb(30, 157, 216)",
+        "rgb(25, 136, 187)",
+        "rgb(31, 165, 185)",
+        "rgb(18, 131, 148)",
+        "rgb(21, 175, 170)",
+        "rgb(15, 149, 138)",
+        "rgb(12, 149, 118)",
+        "rgb(15, 140, 88)",
+        "rgb(13, 136, 42)",
+        "rgb(107, 183, 57)",
+        "rgb(133, 184, 34)",
+        "rgb(173, 182, 31)",
+        "rgb(209, 189, 57)",
+        "rgb(224, 167, 68)",
+        "rgb(205, 131, 51)",
+        "rgb(210, 106, 54)",
     ];
     data.forEach((v, i) => {
         if (v.items && v.items.length > 0) {
             rightItems.push({
                 name: v.name,
                 itemStyle: {
-                    color: rightColor[i % rightColor.length]
-                }
+                    color: rightColor[i % rightColor.length],
+                },
             });
         }
 
@@ -3870,8 +3839,8 @@ export const renderSanKey = (data, configObj, opt) => {
                 leftItems.push({
                     name: name,
                     itemStyle: {
-                        color: leftColor[len % leftColor.length]
-                    }
+                        color: leftColor[len % leftColor.length],
+                    },
                 });
             }
             links.push({
@@ -3881,8 +3850,8 @@ export const renderSanKey = (data, configObj, opt) => {
                 value_: val.value,
                 lineStyle: {
                     //color: val.rate ? sankeyCityColors[i] : 'rgba(0,0,0,0)'
-                    color: rightColor[i % rightColor.length]
-                }
+                    color: rightColor[i % rightColor.length],
+                },
             });
         });
     });
@@ -3890,31 +3859,23 @@ export const renderSanKey = (data, configObj, opt) => {
     let option = {
         tooltip: {
             ...TOOLTIP(),
-            trigger: 'item',
-            triggerOn: 'mousemove',
+            trigger: "item",
+            triggerOn: "mousemove",
             formatter: function (o) {
-                let str = '';
-                if (o.dataType === 'edge') {
+                let str = "";
+                if (o.dataType === "edge") {
                     //线条的提示文字
-                    return (
-                        o.data.target +
-                        ' - ' +
-                        o.data.source +
-                        '：' +
-                        o.data.value_ +
-                        '%'
-                    );
+                    return o.data.target + " - " + o.data.source + "：" + o.data.value_ + "%";
                 }
-                if (o.dataType === 'node') {
+                if (o.dataType === "node") {
                     let name = o.name;
-                    str = name + ' <br/>';
+                    str = name + " <br/>";
                     if (itemName.indexOf(name) === -1) {
                         //左侧的提示文字
                         data.forEach((v) => {
                             if (v.name === name) {
                                 v.items.forEach((val) => {
-                                    str +=
-                                        val.name + '：' + val.value + '%<br/>';
+                                    str += val.name + "：" + val.value + "%<br/>";
                                 });
                                 return false;
                             }
@@ -3925,7 +3886,7 @@ export const renderSanKey = (data, configObj, opt) => {
                         data.forEach((v) => {
                             v.items.forEach((val) => {
                                 if (val.name === name) {
-                                    str += v.name + '：' + val.value + '%<br/>';
+                                    str += v.name + "：" + val.value + "%<br/>";
                                     return false;
                                 }
                             });
@@ -3933,11 +3894,11 @@ export const renderSanKey = (data, configObj, opt) => {
                         return str;
                     }
                 }
-            }
+            },
         },
         series: [
             {
-                type: 'sankey',
+                type: "sankey",
                 data: rightItems.concat(leftItems),
                 links: links,
                 right: 5,
@@ -3947,33 +3908,33 @@ export const renderSanKey = (data, configObj, opt) => {
                 nodeWidth: 90,
                 nodeGap: 0,
                 layoutIterations: 0,
-                focusNodeAdjacency: 'allEdges',
+                focusNodeAdjacency: "allEdges",
                 draggable: false,
                 itemStyle: {
                     normal: {
                         borderWidth: 0,
-                        borderColor: '#fff',
-                        opacity: 1
-                    }
+                        borderColor: "#fff",
+                        opacity: 1,
+                    },
                 },
                 label: {
-                    align: 'center',
+                    align: "center",
                     normal: {
-                        align: 'center',
+                        align: "center",
                         padding: [0, 0, 0, -90],
-                        color: '#fff',
-                        fontSize: CONFIG.FONT_S
-                    }
+                        color: "#fff",
+                        fontSize: CONFIG.FONT_S,
+                    },
                 },
                 lineStyle: {
                     normal: {
                         curveness: 0.5,
                         opacity: 0.6,
-                        color: 'rgb(18, 180, 129)'
-                    }
-                }
-            }
-        ]
+                        color: "rgb(18, 180, 129)",
+                    },
+                },
+            },
+        ],
     };
 
     if (opt) {
@@ -4001,8 +3962,8 @@ export const renderVarietyBar = (data, configObj, opt) => {
     if (!data || data.length === 0) {
         return getNoDataOption();
     }
-    configObj.color = configObj.color || ['#ef3a3a', '#1bb543', '#01799a'];
-    configObj.unit = configObj.unit || '';
+    configObj.color = configObj.color || ["#ef3a3a", "#1bb543", "#01799a"];
+    configObj.unit = configObj.unit || "";
     configObj.barWidth = configObj.barWidth || 20;
 
     let data1 = [];
@@ -4012,35 +3973,25 @@ export const renderVarietyBar = (data, configObj, opt) => {
 
     let itemStyleUp = {
         normal: {
-            barBorderRadius: [
-                0,
-                configObj.barWidth / 2,
-                configObj.barWidth / 2,
-                0
-            ],
-            color: configObj.color[0]
-        }
+            barBorderRadius: [0, configObj.barWidth / 2, configObj.barWidth / 2, 0],
+            color: configObj.color[0],
+        },
     };
     let itemStyleDn = {
         normal: {
-            barBorderRadius: [
-                configObj.barWidth / 2,
-                0,
-                0,
-                configObj.barWidth / 2
-            ],
-            color: configObj.color[1]
-        }
+            barBorderRadius: [configObj.barWidth / 2, 0, 0, configObj.barWidth / 2],
+            color: configObj.color[1],
+        },
     };
     let series = [];
     data.forEach((v) => {
-        let rank = v.rank || '';
-        rank = v.rank > 9 ? v.rank : v.rank + '  ';
-        yAxis.push(rank + '    ' + v.name);
+        let rank = v.rank || "";
+        rank = v.rank > 9 ? v.rank : v.rank + "  ";
+        yAxis.push(rank + "    " + v.name);
         data1.push(v.value);
         series.push({
             value: v.value,
-            itemStyle: v.value > 0 ? itemStyleUp : itemStyleDn
+            itemStyle: v.value > 0 ? itemStyleUp : itemStyleDn,
         });
     });
 
@@ -4056,112 +4007,102 @@ export const renderVarietyBar = (data, configObj, opt) => {
             top: 20,
             left: 80,
             right: 0,
-            bottom: 0
+            bottom: 0,
         },
         tooltip: {
-            ...TOOLTIP()
+            ...TOOLTIP(),
         },
         yAxis: [
             {
-                type: 'category',
+                type: "category",
                 data: yAxis,
                 inverse: true,
                 offset: 60,
                 axisLabel: {
                     interval: 0,
-                    align: 'left',
+                    align: "left",
                     padding: [0, 30, 0, 0],
                     textStyle: {
-                        fontSize: CONFIG.FONT_S
-                    }
+                        fontSize: CONFIG.FONT_S,
+                    },
                 },
                 axisTick: {
-                    show: false
+                    show: false,
                 },
                 axisLine: {
-                    show: false
-                }
+                    show: false,
+                },
             },
             {
                 data: yAxis,
                 inverse: true,
-                axisLabel: { show: false }
-            }
+                axisLabel: { show: false },
+            },
         ],
         xAxis: {
             axisLabel: { show: false },
             axisTick: {
-                show: false
+                show: false,
             },
             axisLine: {
-                show: false
+                show: false,
             },
             splitLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         series: [
             {
-                type: 'bar',
+                type: "bar",
                 barWidth: configObj.barWidth + 2,
-                barGap: '-100%',
+                barGap: "-100%",
                 yAxisIndex: 1,
                 data: data3,
                 itemStyle: {
                     normal: {
-                        barBorderRadius: [
-                            configObj.barWidth / 2,
-                            0,
-                            0,
-                            configObj.barWidth / 2
-                        ],
+                        barBorderRadius: [configObj.barWidth / 2, 0, 0, configObj.barWidth / 2],
                         borderColor: configObj.color[2],
                         borderWidth: 1,
-                        color: 'rgba(0,0,0,0)'
-                    }
+                        color: "rgba(0,0,0,0)",
+                    },
                 },
-                silent: true
+                silent: true,
             },
             {
-                type: 'bar',
+                type: "bar",
                 barWidth: configObj.barWidth + 2,
-                barGap: '-100%',
+                barGap: "-100%",
                 data: data2,
                 yAxisIndex: 1,
                 itemStyle: {
                     normal: {
-                        barBorderRadius: [
-                            0,
-                            configObj.barWidth / 2,
-                            configObj.barWidth / 2,
-                            0
-                        ],
+                        barBorderRadius: [0, configObj.barWidth / 2, configObj.barWidth / 2, 0],
                         borderColor: configObj.color[2],
                         borderWidth: 1,
-                        color: 'rgba(0,0,0,0)'
-                    }
+                        color: "rgba(0,0,0,0)",
+                    },
                 },
                 label: {
                     show: true,
-                    position: 'insideRight',
+                    position: "insideRight",
                     color: getFontColor(),
                     padding: [0, 2, 0, 0],
                     formatter: function (o) {
                         let v = series[o.dataIndex].value;
                         let s = v + configObj.unit;
-                        s = v > 0 ? '+' + s : s;
+                        s = v > 0 ? "+" + s : s;
                         return s;
-                    }
+                    },
                 },
-                silent: true
+                silent: true,
             },
             {
-                type: 'bar',
-                barGap: '-100%',
+                type: "bar",
+                barGap: "-100%",
                 barWidth: configObj.barWidth,
-                data: series
-            }
-        ]
+                data: series,
+            },
+        ],
     };
     if (opt) {
         util.merge(option, opt);
@@ -4187,7 +4128,7 @@ export const renderVarietyBar = (data, configObj, opt) => {
  * */
 export const renderAssetsBar = (data, configObj, opt) => {
     configObj.barWidth = configObj.barWidth || 16;
-    configObj.color = configObj.color || ['#04556b', '#1cc4d8'];
+    configObj.color = configObj.color || ["#04556b", "#1cc4d8"];
     let data1 = [];
     let data2 = [];
     let yAxis = [];
@@ -4197,13 +4138,13 @@ export const renderAssetsBar = (data, configObj, opt) => {
         if (v.time1 && !isNaN(v.time1)) {
             data1.push(max - v.time1);
         } else {
-            data1.push('');
+            data1.push("");
         }
 
         if (v.time2 && !isNaN(v.time2)) {
             data2.push(max - v.time2);
         } else {
-            data2.push('');
+            data2.push("");
         }
     });
     //let n = Math.max(...data1, ...data2);
@@ -4212,36 +4153,36 @@ export const renderAssetsBar = (data, configObj, opt) => {
         legend: LEGEND(),
         grid: {
             containLabel: true,
-            left: '10%'
+            left: "10%",
         },
         tooltip: {
             ...TOOLTIP(),
             formatter: function (v) {
                 return `${v.seriesName}：${max - v.value}年`;
-            }
+            },
         },
         yAxis: {
-            type: 'category',
+            type: "category",
             data: yAxis,
             inverse: true,
             offset: 50,
             axisLabel: {
                 textStyle: {
                     fontSize: CONFIG.FONT_S,
-                    color: getFontColor()
+                    color: getFontColor(),
                 },
                 interval: 0,
-                align: 'left'
+                align: "left",
             },
             axisTick: {
-                show: false
+                show: false,
             },
             axisLine: {
-                show: false
+                show: false,
             },
             splitLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         xAxis: {
             min: 0,
@@ -4249,65 +4190,55 @@ export const renderAssetsBar = (data, configObj, opt) => {
             inverse: true,
             axisLabel: {
                 textStyle: {
-                    fontSize: CONFIG.FONT_S
+                    fontSize: CONFIG.FONT_S,
                 },
                 //interval: 0,
                 formatter: function (v) {
                     if (v === 0) {
-                        return '';
+                        return "";
                     }
                     return max - v;
-                }
+                },
             },
             axisTick: {
-                show: false
+                show: false,
             },
             axisLine: {
-                show: false
+                show: false,
             },
             splitLine: {
-                show: false
-            }
+                show: false,
+            },
         },
         series: [
             {
-                name: configObj.label1 || '建设时间',
-                type: 'bar',
+                name: configObj.label1 || "建设时间",
+                type: "bar",
                 barWidth: configObj.barWidth,
-                barGap: '-100%',
+                barGap: "-100%",
                 data: data1,
                 itemStyle: {
                     normal: {
-                        barBorderRadius: [
-                            configObj.barWidth / 2,
-                            0,
-                            0,
-                            configObj.barWidth / 2
-                        ],
-                        color: configObj.color[0]
-                    }
+                        barBorderRadius: [configObj.barWidth / 2, 0, 0, configObj.barWidth / 2],
+                        color: configObj.color[0],
+                    },
                 },
-                z: 5
+                z: 5,
             },
             {
-                name: configObj.label2 || '数据上传时间',
-                type: 'bar',
+                name: configObj.label2 || "数据上传时间",
+                type: "bar",
                 barWidth: configObj.barWidth,
                 data: data2,
                 itemStyle: {
                     normal: {
-                        barBorderRadius: [
-                            configObj.barWidth / 2,
-                            0,
-                            0,
-                            configObj.barWidth / 2
-                        ],
-                        color: configObj.color[1]
-                    }
+                        barBorderRadius: [configObj.barWidth / 2, 0, 0, configObj.barWidth / 2],
+                        color: configObj.color[1],
+                    },
                 },
-                z: 10
-            }
-        ]
+                z: 10,
+            },
+        ],
     };
 
     if (opt) {
@@ -4321,7 +4252,7 @@ export const renderMap = (data, configObj, opt) => {
     let option = {
         xAxis: {},
         yAxis: {},
-        series: []
+        series: [],
     };
 
     if (opt) {

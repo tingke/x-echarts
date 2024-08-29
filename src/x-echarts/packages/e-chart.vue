@@ -7,39 +7,59 @@
 <script>
 import mixin from '../src/util/mixin';
 import CONFIG from '../src/config/config';
-// import lodash from 'lodash';
-// let _merge = lodash.merge;
-let _merge =  function(...objects) {  
-    let result = {};  
-  
-    objects.forEach(obj => {  
-        for (let key in obj) {  
-            if (obj.hasOwnProperty(key)) {  
-                result[key] = obj[key];  
-            }  
-        }  
-    });  
-  
-    return result;  
-};
+
 import {
     AXIS_STYLE,
     LEGEND,
     TOOLTIP,
     getColor,
-    getFontColor
+    getFontColor,
+    getNoDataOption
 } from '../src/util/nomalChart';
 import util from '../src/util/util';
+
 export default {
     name: 'EChart',
     mixins: [mixin],
     methods: {
+        refreshChart() {
+            try {
+                let opts = this.initChart();
+
+
+                //避免无数据时 option中的series配置项（没有type）导致报错
+                if (!opts.series || !opts.series[0]) {
+                    delete opts.series;
+                }
+
+                opts = util.merge({}, this.defaultOpt, opts);
+                this.chart.setOption(opts, true);
+                this.setStyle(opts);
+
+                // 判断是否打印配置
+                if (this.showOption) {
+                    console.log(JSON.stringify(opts));
+                    console.log(opts);
+                }
+                this.finalOpt = opts;
+            } catch (e) {
+                console.warn(e); //打印错误提示
+                let opts = getNoDataOption(); //已异常时使用无数据内容代替r
+                this.chart.setOption(opts, true);
+                this.setStyle(opts);
+
+                // 判断是否打印配置
+                if (this.showOption) {
+                    console.log(JSON.stringify(opts));
+                    console.log(opts);
+                }
+                this.finalOpt = opts;
+            }
+        },
         initChart() {
-            //let option = this.option;
-            // let option = JSON.parse(JSON.stringify(this.option));
             let option = util.deepClone(this.option);
             if (option.legend) {
-                option.legend = _merge(LEGEND(), option.legend);
+                option.legend = util.merge(LEGEND(), option.legend);
             }
 
             option.color = option.color || getColor();
@@ -53,10 +73,10 @@ export default {
             if (option.xAxis) {
                 if (xAxis.constructor === Array) {
                     xAxis.forEach((v, i) => {
-                        xAxis[i] = _merge({}, AXIS_STYLE(), v);
+                        xAxis[i] = util.merge({}, AXIS_STYLE(), v);
                     });
                 } else {
-                    xAxis = _merge(AXIS_STYLE(), xAxis);
+                    xAxis = util.merge(AXIS_STYLE(), xAxis);
                 }
             }
             option.xAxis = xAxis;
@@ -65,10 +85,10 @@ export default {
             if (option.yAxis) {
                 if (yAxis.constructor === Array) {
                     yAxis.forEach((v, i) => {
-                        yAxis[i] = _merge({}, AXIS_STYLE(), v);
+                        yAxis[i] = util.merge({}, AXIS_STYLE(), v);
                     });
                 } else {
-                    yAxis = _merge({}, AXIS_STYLE(), yAxis);
+                    yAxis = util.merge({}, AXIS_STYLE(), yAxis);
                 }
             }
             option.yAxis = yAxis;

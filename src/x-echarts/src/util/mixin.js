@@ -86,6 +86,9 @@ export default {
             },
             deep: true,
         },
+        autoresize() {
+            this.listenResize();
+        },
     },
     created() {
         // reloadChart 延迟调用，在同时 watch 属性：data, option, config 的时候，可能调用组件时会修改这三个属性，会导致重复调用三次
@@ -94,8 +97,27 @@ export default {
     },
     mounted() {
         this._renderChart();
+        this.autoresize && this.listenResize();
     },
     methods: {
+        listenResize() {
+            if (this.autoresize) {
+                if (!this._ro) {
+                    this._ro = new ResizeObserver(() => {
+                        setTimeout(() => {
+                            const keys = Object.keys(this.finalOpt);
+                            console.log('zzzz', keys);
+
+                            keys.length > 0 && this.chart && this.chart.resize();
+                        }, 10);
+                    });
+                }
+                this._ro.observe(this.$refs.chart);
+            } else {
+                this._ro && this._ro.disconnect();
+                this._ro = null;
+            }
+        },
         setStyle(option) {
             this.className = option.series ? "" : "p-chart-no-data";
         },
@@ -126,7 +148,7 @@ export default {
                 }
             } catch (e) {
                 console.warn(e); //打印错误提示
-                let opts = getNoDataOption(); //已异常时使用无数据内容代替r
+                let opts = getNoDataOption(); //已异常时使用无数据内容代替
                 this.chart.setOption(opts, true);
                 this.setStyle(opts);
 
@@ -140,9 +162,7 @@ export default {
         },
         _renderChart() {
             this.chart = echarts.init(this.$refs.chart);
-            /*  this.chart.setOption_ = function(opts, bl){
-                this.chart.setOption(opts, bl);
-            } */
+
             // 渲染echarts
             this.refreshChart();
 
