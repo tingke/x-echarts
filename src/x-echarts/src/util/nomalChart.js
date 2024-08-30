@@ -749,14 +749,7 @@ export const renderPictorialStackBar = (data, configObj, opt) => {
                 }
             );
         }
-
-        // if(isYAxis && v.yAxisIndex != undefined) {
-        //     v.xAxisIndex = v.yAxisIndex;
-        //     delete v.yAxisIndex
-        // }
     });
-
-    // console.log(series);
 
     //类目轴
     let categoryAxis = {
@@ -1093,7 +1086,6 @@ export const renderStripeBar3 = (data, configObj, opt) => {
 
     var defaultData = [];
     data.forEach((item) => {
-        console.log(item);
         defaultData.push(item);
     });
     let getArrByKey = function (data, k) {

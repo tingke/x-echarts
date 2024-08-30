@@ -106,8 +106,6 @@ export default {
                     this._ro = new ResizeObserver(() => {
                         setTimeout(() => {
                             const keys = Object.keys(this.finalOpt);
-                            console.log('zzzz', keys);
-
                             keys.length > 0 && this.chart && this.chart.resize();
                         }, 10);
                     });
