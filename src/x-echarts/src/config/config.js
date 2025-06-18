@@ -1,5 +1,4 @@
 /** @format */
-// import noDataPng from '../images/nodata.png';
 
 export default {
     //主题颜色

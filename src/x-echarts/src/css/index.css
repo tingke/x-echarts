@@ -1,10 +1,10 @@
 /* 图表无数据样式 */
 .p-chart-no-data{
-    background: url(../images/nodata.png) no-repeat center; 
+    background: url(../images/nodata.png) no-repeat center;
     position: relative;
 }
 .p-chart-no-data::after{
-    content: '暂时没有数据';
+    content: '暂无数据';
     position: absolute;
     top: 50%;
     margin-top: 90px;
@@ -18,7 +18,7 @@
 
 /* 深色下图表无数据样式 */
 .darkTheme .p-chart-no-data{
-    background-image: url(../images/nodata_dark.png); 
+    background-image: url(../images/nodata_dark.png);
 }
 .darkTheme .p-chart-no-data::after{
     color: #fff;
